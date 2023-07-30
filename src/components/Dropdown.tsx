@@ -33,7 +33,7 @@ export const Dropdown = ({
   filterFn,
   changeFn,
   selection,
-  disabled=false
+  disabled = false,
 }: Props) => {
   const cleanTitle = Array.isArray(title) ? title[chosenLang] : "Dropdown";
   const id = toCamelCase(cleanTitle);

@@ -1,4 +1,5 @@
 export enum PowerWordDomain {
+  UNKNOWN = "UNKNOWN",
   ABJURATION = "ABJURATION",
   CONJURATION = "CONJURATION",
   DIVINATION = "DIVINATION",
@@ -13,6 +14,10 @@ export type ValidPowerWordDomain =
   (typeof PowerWordDomain)[keyof typeof PowerWordDomain];
 
 export const domainList = [
+  {
+    name: ["-Ninguna-", "-None-"],
+    formulaName: PowerWordDomain.UNKNOWN,
+  },
   {
     name: ["Abjuración", "Abjuration"],
     formulaName: PowerWordDomain.ABJURATION,

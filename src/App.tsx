@@ -4,10 +4,6 @@ import { ReactComponent as KromsysLogo } from "./assets/k-logo.svg";
 import { ResultsPage } from "./compositions/ResultPage";
 import { InputPage } from "./compositions/InputPage";
 import { AppAction, spellReducer } from "./reducers/spellReducer";
-import {
-  PlayerSpecies,
-  ValidPlayerSpecies,
-} from "./typings/Species";
 
 const langs = {
   esp: 0,
@@ -17,15 +13,17 @@ const langs = {
 const defaultLang = langs.esp;
 
 export type AppState = {
-  charSpecies?: ValidPlayerSpecies;
   showResults: boolean;
   spellName: string;
+  words: string[];
+  spellLength: number;
 };
 
 export const initialState: AppState = {
-  charSpecies: PlayerSpecies.HUMANO,
   showResults: false,
-  spellName: '',
+  spellName: "",
+  words: ["", "", "", "", "", "", "", "", ""],
+  spellLength: 9,
 };
 
 function App() {
@@ -67,7 +65,7 @@ function App() {
       {/* Footer */}
       <footer className="bg-stone-950 py-4 px-4 flex justify-center sticky bottom-0">
         <button
-          className="w-1/2 px-4 py-2 text-white text-sm mr-4"
+          className="w-1/2 lg:w-1/3 px-4 py-2 text-white text-sm mr-4"
           onClick={() => {
             console.log("A");
           }}
@@ -75,7 +73,7 @@ function App() {
           {["< Limpiar", "< Clean up"][choosenLang]}
         </button>
         <button
-          className="w-1/2 px-4 py-2 text-white text-sm"
+          className="w-1/2 lg:w-1/3 px-4 py-2 text-white text-sm"
           onClick={() => {
             console.log("A");
           }}
