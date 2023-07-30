@@ -4,6 +4,8 @@ import { SpellAction } from "../reducers/spellReducer";
 import { domainList } from "../app-types/Domains";
 import { AppState } from "../App";
 import { FakeNumericInput } from "../components/FakeNumericInput";
+import { useEffect } from "react";
+import { calculatePower } from "../utils/calculatePower";
 
 type Props = {
   state: AppState;
@@ -28,7 +30,7 @@ export const InputPage = ({ state, choosenLang, dispatch }: Props) => {
     });
   };
 
-  const offSet = [0, 3, 6, 9, 12]
+  const offSet = [0, 3, 6, 9, 12];
   const spellLengthArray = Array.from({ length: state.spellLength });
 
   // Split the array into chunks of a specified size
@@ -40,6 +42,12 @@ export const InputPage = ({ state, choosenLang, dispatch }: Props) => {
     return chunkedArray;
   };
   const chunksOfThree = chunkArray(spellLengthArray, 3);
+
+  /*
+  useEffect(() => {
+    calculatePower(choosenLang, [], state.words, state.spellLength);
+  }, [choosenLang, state.words, state.spellLength]);
+  */
 
   return (
     <>
@@ -58,13 +66,21 @@ export const InputPage = ({ state, choosenLang, dispatch }: Props) => {
       {chunksOfThree.map((chunk, i) => (
         <div key={i} className="flex space-x-4">
           {chunk.map((_unused: any, innerIndex: number) => (
-            <div key={innerIndex} className={chunk.length > 1 ? `w-1/${chunk.length}` : 'w-full'}>
+            <div
+              key={innerIndex}
+              className={chunk.length > 1 ? `w-1/${chunk.length}` : "w-full"}
+            >
               <Dropdown
                 key={innerIndex + offSet[i] + 1}
-                title={[`#${innerIndex + offSet[i] + 1}`, `#${innerIndex + offSet[i] + 1}`]}
+                title={[
+                  `#${innerIndex + offSet[i] + 1}`,
+                  `#${innerIndex + offSet[i] + 1}`,
+                ]}
                 options={domainList}
                 chosenLang={choosenLang}
-                changeFn={(newValue: any) => changeDomain(newValue, innerIndex + offSet[i])}
+                changeFn={(newValue: any) =>
+                  changeDomain(newValue, innerIndex + offSet[i])
+                }
                 selection={state.words[innerIndex + offSet[i]]}
                 disabled={state.showResults}
               />
@@ -72,8 +88,14 @@ export const InputPage = ({ state, choosenLang, dispatch }: Props) => {
           ))}
         </div>
       ))}
-     
-      <div className="flex justify-center mt-4">x</div>
+
+      <div className="flex justify-center mt-4">
+        <div className="w-full">
+          <small>
+            <pre>{JSON.stringify({ ...state.results }, null, 2)}</pre>
+          </small>
+        </div>
+      </div>
     </>
   );
 };

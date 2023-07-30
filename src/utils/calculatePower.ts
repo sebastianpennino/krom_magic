@@ -1,4 +1,4 @@
-import { PowerRules } from "../app-types/PowerRules";
+import { PowerRules, ruleList } from "../app-types/PowerRules";
 
 type RulesObject = {
   [PowerRules.ACCOMMODANT]: number;
@@ -59,6 +59,34 @@ const defaultRulesObject = {
 };
 
 // Given current words returns all the possible rules and points
-const calculatePower = (words: string[], spellLength: number): RulesObject => {
-  return defaultRulesObject;
+export const calculatePower = (
+  chosenLang: number,
+  words: string[],
+  domainWords: string[],
+  spellLength: number
+) => {
+  console.log("calculating...");
+  const cleanDomainWords = domainWords.filter((w) => w);
+  const rst = ruleList.map((element) => {
+    return {
+      name: element.name[chosenLang],
+      description: element.description[chosenLang],
+      rewardText: element.rewardText[chosenLang],
+      score: element.evalFunction(words, cleanDomainWords, spellLength),
+    };
+  });
+  const realScore = rst
+    .map((r) => r.score)
+    .sort((a, b) => a - b)
+    .reverse()
+    .slice(0, spellLength)
+    .reduce((acc, cur) => acc + cur, 0);
+  const totalScore = rst.reduce((rst, cur) => {
+    return rst + cur.score;
+  }, 0);
+  return {
+    // total: totalScore,
+    realScore,
+    rst: rst.filter((rst) => rst.score > 0),
+  };
 };

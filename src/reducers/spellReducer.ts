@@ -1,8 +1,10 @@
 import { AppState } from "../App";
+import { calculatePower } from "../utils/calculatePower";
 
 export enum SpellAction {
   CHANGE_DOMAIN = "CHANGE_DOMAIN",
   CHANGE_LENGTH = "CHANGE_LENGTH",
+  UPDATE_RESULTS = "UPDATE_RESULTS",
 }
 
 export type ValidSpellAction = (typeof SpellAction)[keyof typeof SpellAction];
@@ -31,6 +33,12 @@ export function spellReducer(state: AppState, action: AppAction) {
         ...state,
         spellLength: action.payload,
       };
+    }
+    case SpellAction.UPDATE_RESULTS: {
+      return {
+        ...state,
+        results: calculatePower(action.payload, [], state.words, state.spellLength)
+      }
     }
   }
   throw Error("Unknown action: " + action.type);

@@ -3,7 +3,7 @@ import FlagButton from "./components/FlagButton";
 import { ReactComponent as KromsysLogo } from "./assets/k-logo.svg";
 import { ResultsPage } from "./compositions/ResultPage";
 import { InputPage } from "./compositions/InputPage";
-import { AppAction, spellReducer } from "./reducers/spellReducer";
+import { AppAction, SpellAction, spellReducer } from "./reducers/spellReducer";
 
 const langs = {
   esp: 0,
@@ -17,13 +17,15 @@ export type AppState = {
   spellName: string;
   words: string[];
   spellLength: number;
+  results: any;
 };
 
 export const initialState: AppState = {
   showResults: false,
   spellName: "",
   words: ["", "", "", "", "", "", "", "", ""],
-  spellLength: 9,
+  spellLength: 2,
+  results: null,
 };
 
 function App() {
@@ -75,7 +77,16 @@ function App() {
         <button
           className="w-1/2 lg:w-1/3 px-4 py-2 text-white text-sm"
           onClick={() => {
-            console.log("A");
+            const oneIsEmpty = state.words.filter((w) => w);
+            if (oneIsEmpty.length !== state.spellLength) {
+              return alert(
+                "Error: Can't process your request, some words are not selected. All must have a domain selected"
+              );
+            }
+            dispatch({
+              type: SpellAction.UPDATE_RESULTS,
+              payload: choosenLang,
+            });
           }}
         >
           {["Calcular", "Calculate"][choosenLang]}

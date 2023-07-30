@@ -31,11 +31,26 @@ export enum PowerRules {
 
 export type ValidPowerRules = (typeof PowerRules)[keyof typeof PowerRules];
 
-const ruleList = [
+type validRule = {
+  formulaName: string;
+  name: string[];
+  description: string[];
+  rewardText: string[];
+  evalFunction: (
+    words: string[],
+    domainWords: string[],
+    spellLength: number,
+    invertedWords?: boolean[],
+    assonanceWords?: boolean[],
+    rhymingWords?: boolean[]
+  ) => number;
+};
+
+export const ruleList: validRule[] = [
   {
     formulaName: PowerRules.ACCOMMODANT,
     name: ["Acomodada", "Accommodant"],
-    decription: [
+    description: [
       "La primera y última Palabra son del mismo dominio (y ninguna otra Palabra es de ese dominio)",
       "Whose first and last Word are from the same domain, and no other Words share that domain",
     ],
@@ -64,6 +79,7 @@ const ruleList = [
       domainWords: string[],
       spellLength: number
     ): number => {
+      return 0
       const firstLetter = words[0].charAt(0);
       const allWordsStartWithFirstLetter = words.every((chosenWord) => {
         return firstLetter === chosenWord.charAt(0);
@@ -87,8 +103,8 @@ const ruleList = [
       const toFind = domainWords.map((domain) => {
         const clean = domain as unknown as ValidPowerWordDomain;
         return {
-          left: cyclogram[clean].analogousAntiClockWise,
-          right: cyclogram[clean].analogousClockWise,
+          left: cyclogram[clean]?.analogousAntiClockWise,
+          right: cyclogram[clean]?.analogousClockWise,
         };
       });
       const allFound = toFind.every((item) => {
@@ -112,10 +128,11 @@ const ruleList = [
       words: string[],
       domainWords: string[],
       spellLength: number,
-      invertedWords: boolean[],
-      assonanceWords: boolean[]
+      invertedWords?: boolean[],
+      assonanceWords?: boolean[]
     ): number => {
-      const assonanceNum = assonanceWords.filter((w) => w).length;
+      const assonanceNum =
+        (assonanceWords && assonanceWords.filter((w) => w).length) ?? 0;
       const reward = assonanceNum * 2;
       return assonanceNum > 2 ? reward : 0;
     },
@@ -197,7 +214,7 @@ const ruleList = [
       spellLength: number
     ): number => {
       const spellUniqueDomains = new Set(domainWords);
-      return spellUniqueDomains.size === spellLength ? spellLength : 0; // Replace this with logic
+      return spellUniqueDomains.size === spellLength && spellUniqueDomains.size > 1 ? spellLength : 0;
     },
   },
   {
@@ -212,11 +229,12 @@ const ruleList = [
       words: string[],
       domainWords: string[],
       spellLength: number,
-      invertedWords: boolean[],
-      assonanceWords: boolean[],
-      rhymingWords: boolean[]
+      invertedWords?: boolean[],
+      assonanceWords?: boolean[],
+      rhymingWords?: boolean[]
     ): number => {
-      const rhymingWordsOnly = rhymingWords.filter((w) => w);
+      const rhymingWordsOnly =
+        (rhymingWords && rhymingWords.filter((w) => w)) ?? [];
       const pairs = Math.floor(rhymingWordsOnly.length / 2);
       const reward = pairs * 2;
       return pairs > 1 ? reward : 0;
@@ -237,11 +255,11 @@ const ruleList = [
     ): number => {
       const allNorth = domainWords.every((word) => {
         const cleanWord = word as unknown as ValidPowerWordDomain;
-        return cyclogram[cleanWord].north;
+        return cyclogram[cleanWord]?.north;
       });
       const allSouth = domainWords.every((word) => {
         const cleanWord = word as unknown as ValidPowerWordDomain;
-        return cyclogram[cleanWord].south;
+        return cyclogram[cleanWord]?.south;
       });
       const reward = 1;
       return allNorth || allSouth ? reward : 0;
@@ -279,7 +297,7 @@ const ruleList = [
     ): number => {
       const wordsSorted = [...words].sort();
       const areWordsInOrder = wordsSorted.every((w, idx) => w === words[idx]);
-      return areWordsInOrder ? spellLength : 0;
+      return words.length > 2 && areWordsInOrder ? spellLength : 0;
     },
   },
   {
@@ -294,9 +312,10 @@ const ruleList = [
       words: string[],
       domainWords: string[],
       spellLength: number,
-      invertedWords: boolean[]
+      invertedWords?: boolean[]
     ): number => {
-      const allInverted = invertedWords.every((check) => check);
+      const allInverted =
+        (invertedWords && invertedWords.every((check) => check)) ?? false;
       return allInverted ? spellLength : 0;
     },
   },
@@ -338,7 +357,7 @@ const ruleList = [
       }
       const domainWordsId = domainWords.map((word) => {
         const cleanWord = word as unknown as ValidPowerWordDomain;
-        return cyclogram[cleanWord].id;
+        return cyclogram[cleanWord]?.id;
       });
       const reversedDomainWordsId = [...domainWordsId].reverse();
       const checkClockwise = [];
@@ -387,7 +406,7 @@ const ruleList = [
       }
       const domainWordsId = domainWords.map((word) => {
         const cleanWord = word as unknown as ValidPowerWordDomain;
-        return cyclogram[cleanWord].id;
+        return cyclogram[cleanWord]?.id;
       });
       const reversedDomainWordsId = [...domainWordsId].reverse();
       const checkClockwise = [];
@@ -450,7 +469,7 @@ const ruleList = [
       let hits = 0;
       domainWords.forEach((domain) => {
         const clean = domain as unknown as ValidPowerWordDomain;
-        const opposite = cyclogram[clean].opposite;
+        const opposite = cyclogram[clean]?.opposite;
         const found = domainWords.findIndex((w) => {
           return (w = opposite);
         });
@@ -474,9 +493,9 @@ const ruleList = [
       words: string[],
       domainWords: string[],
       spellLength: number,
-      invertedWords: boolean[]
+      invertedWords?: boolean[]
     ): number => {
-      const one = invertedWords.some((word) => word);
+      const one = invertedWords && invertedWords.some((word) => word);
       return one ? 1 : 0;
     },
   },
@@ -541,10 +560,10 @@ const ruleList = [
       }
       const arr = Array.from(uniqueDomains);
       const cleanWord = arr[0] as unknown as ValidPowerWordDomain;
-      const compareTo = cyclogram[cleanWord].quarter;
+      const compareTo = cyclogram[cleanWord]?.quarter;
       const allSameQuarter = domainWords.every((word) => {
         const clean = word as unknown as ValidPowerWordDomain;
-        return cyclogram[clean].quarter === compareTo;
+        return cyclogram[clean]?.quarter === compareTo;
       });
       return allSameQuarter ? reward : 0;
     },
@@ -583,11 +602,11 @@ const ruleList = [
       const reward = 1;
       const allWest = domainWords.every((word) => {
         const cleanWord = word as unknown as ValidPowerWordDomain;
-        return cyclogram[cleanWord].west;
+        return cyclogram[cleanWord]?.west;
       });
       const allEast = domainWords.every((word) => {
         const cleanWord = word as unknown as ValidPowerWordDomain;
-        return cyclogram[cleanWord].east;
+        return cyclogram[cleanWord]?.east;
       });
       return allWest || allEast ? reward : 0;
     },
@@ -605,6 +624,7 @@ const ruleList = [
       domainWords: string[],
       spellLength: number
     ): number => {
+      return 0
       const len = words[0].length;
       const check = words.every((word) => word.length === len);
       return check ? len : 0;
