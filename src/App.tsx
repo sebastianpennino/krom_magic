@@ -4,6 +4,7 @@ import { ReactComponent as KromsysLogo } from "./assets/k-logo.svg";
 import { ResultsPage } from "./compositions/ResultPage";
 import { InputPage } from "./compositions/InputPage";
 import { AppAction, SpellAction, spellReducer } from "./reducers/spellReducer";
+import { PowerWordDomain } from "./app-types/Domains";
 
 const langs = {
   esp: 0,
@@ -23,8 +24,18 @@ export type AppState = {
 export const initialState: AppState = {
   showResults: false,
   spellName: "",
-  words: ["", "", "", "", "", "", "", "", ""],
-  spellLength: 2,
+  words: [
+    PowerWordDomain.ILUSION ,
+    PowerWordDomain.TRANSMUTATION,
+    PowerWordDomain.NECROMANCY,
+    PowerWordDomain.EVOCATION,
+    "",
+    "",
+    "",
+    "",
+    "",
+  ],
+  spellLength: 4,
   results: null,
 };
 
@@ -77,7 +88,11 @@ function App() {
         <button
           className="w-1/2 lg:w-1/3 px-4 py-2 text-white text-sm"
           onClick={() => {
-            const oneIsEmpty = state.words.filter((w) => w);
+            const oneIsEmpty = state.words
+              .slice(0, state.spellLength)
+              .filter((w) => {
+                return w !== "";
+              });
             if (oneIsEmpty.length !== state.spellLength) {
               return alert(
                 "Error: Can't process your request, some words are not selected. All must have a domain selected"

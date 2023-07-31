@@ -44,7 +44,6 @@ export const Dropdown = ({
   }
 
   const onChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    console.log("onChange!", e.target.value);
     changeFn(e.target.value);
   };
 

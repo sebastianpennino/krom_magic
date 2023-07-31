@@ -65,11 +65,11 @@ export const calculatePower = (
   domainWords: string[],
   spellLength: number
 ) => {
-  console.log("calculating...");
-  const cleanDomainWords = domainWords.filter((w) => w);
+  const cleanDomainWords = domainWords.slice(0, spellLength);
   const rst = ruleList.map((element) => {
     return {
       name: element.name[chosenLang],
+      letter: element.name[chosenLang].charAt(0).toLowerCase(),
       description: element.description[chosenLang],
       rewardText: element.rewardText[chosenLang],
       score: element.evalFunction(words, cleanDomainWords, spellLength),
@@ -79,7 +79,7 @@ export const calculatePower = (
     .map((r) => r.score)
     .sort((a, b) => a - b)
     .reverse()
-    .slice(0, spellLength)
+    .slice(0, spellLength) // pick same as number words
     .reduce((acc, cur) => acc + cur, 0);
   const totalScore = rst.reduce((rst, cur) => {
     return rst + cur.score;
@@ -87,6 +87,22 @@ export const calculatePower = (
   return {
     // total: totalScore,
     realScore,
-    rst: rst.filter((rst) => rst.score > 0),
+    pickedRules: rst
+      // .filter((l) => l.letter === "q") // for testing
+      .filter((rst) => rst.score > 0)
+      .sort((a, b) => a.score - b.score)
+      .reverse()
+      .slice(0, spellLength)
+      .map((r) => ({
+        name: r.name,
+        desc: r.description,
+        score: r.score,
+      })),
+    allPositiveRules: rst.filter((rst) => rst.score > 0),
+    allRules: rst.map((r) => ({
+      letter: r.letter.toUpperCase(),
+      desc: r.description,
+      score: r.score,
+    })),
   };
 };

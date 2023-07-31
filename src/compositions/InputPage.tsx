@@ -91,7 +91,7 @@ export const InputPage = ({ state, choosenLang, dispatch }: Props) => {
 
       <div className="flex justify-center mt-4">
         <div className="w-full">
-          <small>
+          <small style={{fontSize: "10px"}}>
             <pre>{JSON.stringify({ ...state.results }, null, 2)}</pre>
           </small>
         </div>

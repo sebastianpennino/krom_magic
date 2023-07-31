@@ -36,13 +36,15 @@ type validRule = {
   name: string[];
   description: string[];
   rewardText: string[];
+  version?: any;
   evalFunction: (
     words: string[],
     domainWords: string[],
     spellLength: number,
     invertedWords?: boolean[],
     assonanceWords?: boolean[],
-    rhymingWords?: boolean[]
+    rhymingWords?: boolean[],
+    isGracious?: boolean
   ) => number;
 };
 
@@ -55,38 +57,45 @@ export const ruleList: validRule[] = [
       "Whose first and last Word are from the same domain, and no other Words share that domain",
     ],
     rewardText: ["(+2)", "(+2)"],
+    version: 1.2,
     evalFunction: (
-      words: string[],
+      _words: string[],
       domainWords: string[],
       spellLength: number
     ): number => {
+      const reward = 2;
       const firstWord = domainWords[0];
       const lastWord = domainWords[spellLength - 1];
-      const reward = 2;
-      return firstWord === lastWord ? reward : 0;
+      const same = firstWord === lastWord;
+      if (spellLength > 2) {
+        const rest = domainWords.slice(1, -1);
+        return same && rest.every((word) => word !== firstWord) ? reward : 0;
+      }
+      return same ? reward : 0;
     },
   },
-  {
-    formulaName: PowerRules.BABELOUS,
-    name: ["Babelinosa", "Babelous"],
-    description: [
-      "Cada Palabra del hechizo comienza con la misma letra del alfabeto",
-      "For which every Word begins with the same letter of the alphabet",
-    ],
-    rewardText: ["(+1/Palabra)", "(+1/Word)"],
-    evalFunction: (
-      words: string[],
-      domainWords: string[],
-      spellLength: number
-    ): number => {
-      return 0
-      const firstLetter = words[0].charAt(0);
-      const allWordsStartWithFirstLetter = words.every((chosenWord) => {
-        return firstLetter === chosenWord.charAt(0);
-      });
-      return allWordsStartWithFirstLetter ? spellLength : 0;
-    },
-  },
+  // TODO: waiting for individual words functionality
+  // {
+  //   formulaName: PowerRules.BABELOUS,
+  //   name: ["Babelinosa", "Babelous"],
+  //   description: [
+  //     "Cada Palabra del hechizo comienza con la misma letra del alfabeto",
+  //     "For which every Word begins with the same letter of the alphabet",
+  //   ],
+  //   rewardText: ["(+1/Palabra)", "(+1/Word)"],
+  //   evalFunction: (
+  //     words: string[],
+  //     _domainWords: string[],
+  //     spellLength: number
+  //   ): number => {
+  //     return 0;
+  //     const firstLetter = words[0].charAt(0);
+  //     const allWordsStartWithFirstLetter = words.every((chosenWord) => {
+  //       return firstLetter === chosenWord.charAt(0);
+  //     });
+  //     return allWordsStartWithFirstLetter ? spellLength : 0;
+  //   },
+  // },
   {
     formulaName: PowerRules.COMPOUND,
     name: ["Compuesta", "Compound"],
@@ -95,8 +104,9 @@ export const ruleList: validRule[] = [
       "Whose Words are each analogous to one other Word in the spell",
     ],
     rewardText: ["(+1/Palabra)", "(+1/Word)"],
+    version: 1.2,
     evalFunction: (
-      words: string[],
+      _words: string[],
       domainWords: string[],
       spellLength: number
     ): number => {
@@ -125,10 +135,10 @@ export const ruleList: validRule[] = [
     ],
     rewardText: ["(+2/Palabra Asonante)", "(+2/Assonat Word)"],
     evalFunction: (
-      words: string[],
-      domainWords: string[],
-      spellLength: number,
-      invertedWords?: boolean[],
+      _words: string[],
+      _domainWords: string[],
+      _spellLength: number,
+      _invertedWords?: boolean[],
       assonanceWords?: boolean[]
     ): number => {
       const assonanceNum =
@@ -146,7 +156,7 @@ export const ruleList: validRule[] = [
     ],
     rewardText: ["(+5)", "(+5)"],
     evalFunction: (
-      words: string[],
+      _words: string[],
       domainWords: string[],
       spellLength: number
     ): number => {
@@ -163,8 +173,9 @@ export const ruleList: validRule[] = [
       "Which contain an equal number of Words from each unique domain represented by the spell, and which contains Words from at least 2 domains.",
     ],
     rewardText: ["(+3, minimo 2 Palabras)", "(+3, minimum 2 Words)"],
+    version: 1.1,
     evalFunction: (
-      words: string[],
+      _words: string[],
       domainWords: string[],
       spellLength: number
     ): number => {
@@ -180,7 +191,7 @@ export const ruleList: validRule[] = [
       });
       const setOfNum = new Set(numOfWordsArr); // should be reduced to a single element
       const reward = 3;
-      return spellUniqueDomains.size > 2 && setOfNum.size === 1 ? reward : 0;
+      return spellUniqueDomains.size >= 2 && setOfNum.size === 1 ? reward : 0;
     },
   },
   {
@@ -192,12 +203,16 @@ export const ruleList: validRule[] = [
     ],
     rewardText: ["(+4)", "(+4)"],
     evalFunction: (
-      words: string[],
-      domainWords: string[],
-      spellLength: number
+      _words: string[],
+      _domainWords: string[],
+      _spellLength: number,
+      _invertedWords?: boolean[],
+      _assonanceWords?: boolean[],
+      _rhymingWords?: boolean[],
+      isGracious?: boolean
     ): number => {
       const reward = 4;
-      return 0;
+      return isGracious ? reward : 0;
     },
   },
   {
@@ -208,13 +223,17 @@ export const ruleList: validRule[] = [
       "Whose Words are all from different domains",
     ],
     rewardText: ["(+1/Palabra)", "(+1/Word)"],
+    version: 1.1,
     evalFunction: (
-      words: string[],
+      _words: string[],
       domainWords: string[],
       spellLength: number
     ): number => {
       const spellUniqueDomains = new Set(domainWords);
-      return spellUniqueDomains.size === spellLength && spellUniqueDomains.size > 1 ? spellLength : 0;
+      return spellUniqueDomains.size === spellLength &&
+        spellUniqueDomains.size > 1
+        ? spellLength
+        : 0;
     },
   },
   {
@@ -225,19 +244,19 @@ export const ruleList: validRule[] = [
       "For which at least two Words in the spell rhyme.",
     ],
     rewardText: ["(+2/Palabra con rima)", "(+2/rhyming Word)"],
+    version: 1.2,
     evalFunction: (
-      words: string[],
-      domainWords: string[],
-      spellLength: number,
-      invertedWords?: boolean[],
-      assonanceWords?: boolean[],
+      _words: string[],
+      _domainWords: string[],
+      _spellLength: number,
+      _invertedWords?: boolean[],
+      _assonanceWords?: boolean[],
       rhymingWords?: boolean[]
     ): number => {
       const rhymingWordsOnly =
         (rhymingWords && rhymingWords.filter((w) => w)) ?? [];
-      const pairs = Math.floor(rhymingWordsOnly.length / 2);
-      const reward = pairs * 2;
-      return pairs > 1 ? reward : 0;
+      const reward = rhymingWordsOnly.length * 2;
+      return reward > 1 ? reward : 0;
     },
   },
   {
@@ -249,9 +268,9 @@ export const ruleList: validRule[] = [
     ],
     rewardText: ["(+1)", "(+1)"],
     evalFunction: (
-      words: string[],
+      _words: string[],
       domainWords: string[],
-      spellLength: number
+      _spellLength: number
     ): number => {
       const allNorth = domainWords.every((word) => {
         const cleanWord = word as unknown as ValidPowerWordDomain;
@@ -266,22 +285,22 @@ export const ruleList: validRule[] = [
     },
   },
   // TODO: No idea how to proceed. Investigate.
-  {
-    formulaName: PowerRules.KYMOIAMBIC,
-    name: ["Kymoiambico", "Kymoiambic"],
-    description: [
-      "Las Palabras estan organizadas en un metro yámbico",
-      "for which the spell’s Words are organized into iambic meter",
-    ],
-    rewardText: ["(+1/Palabra)", "(+1/Word)"],
-    evalFunction: (
-      words: string[],
-      domainWords: string[],
-      spellLength: number
-    ): number => {
-      return 0; // Replace this with logic
-    },
-  },
+  // {
+  //   formulaName: PowerRules.KYMOIAMBIC,
+  //   name: ["Kymoiambico", "Kymoiambic"],
+  //   description: [
+  //     "Las Palabras estan organizadas en un metro yámbico",
+  //     "for which the spell’s Words are organized into iambic meter",
+  //   ],
+  //   rewardText: ["(+1/Palabra)", "(+1/Word)"],
+  //   evalFunction: (
+  //     words: string[],
+  //     domainWords: string[],
+  //     spellLength: number
+  //   ): number => {
+  //     return 0; // Replace this with logic
+  //   },
+  // },
   {
     formulaName: PowerRules.LEXICAL,
     name: ["Lexico", "Lexical"],
@@ -290,11 +309,15 @@ export const ruleList: validRule[] = [
       "whose constituent Words are in alphabetical order",
     ],
     rewardText: ["(+1/Palabra)", "(+1/Word)"],
+    version: 1.1,
     evalFunction: (
       words: string[],
-      domainWords: string[],
+      _domainWords: string[],
       spellLength: number
     ): number => {
+      if (words.length < 2) {
+        return 0;
+      }
       const wordsSorted = [...words].sort();
       const areWordsInOrder = wordsSorted.every((w, idx) => w === words[idx]);
       return words.length > 2 && areWordsInOrder ? spellLength : 0;
@@ -309,13 +332,13 @@ export const ruleList: validRule[] = [
     ],
     rewardText: ["(+1/Palabra)", "(+1/Word)"],
     evalFunction: (
-      words: string[],
-      domainWords: string[],
+      _words: string[],
+      _domainWords: string[],
       spellLength: number,
       invertedWords?: boolean[]
     ): number => {
       const allInverted =
-        (invertedWords && invertedWords.every((check) => check)) ?? false;
+        (invertedWords && invertedWords.every((w) => w)) ?? false;
       return allInverted ? spellLength : 0;
     },
   },
@@ -328,7 +351,7 @@ export const ruleList: validRule[] = [
     ],
     rewardText: ["(+1/Palabra, maximo +4)", "(+1/Word, up to +4)"],
     evalFunction: (
-      words: string[],
+      _words: string[],
       domainWords: string[],
       spellLength: number
     ): number => {
@@ -341,139 +364,128 @@ export const ruleList: validRule[] = [
     formulaName: PowerRules.ORBITAL,
     name: ["Orbital", "Orbital"],
     description: [
-      "Los dominios de cada palabra del hechizo van en orden (sentido horario u antihorario) alrrededor del diagrama",
+      "Los dominios de cada Palabra van en una misma direccion (horario u antihorario) (y dentro de una unica rotacion!)",
       "For which the domains of each Word in order flow in one direction (either clockwise or counter-clockwise within one rotation) around the Octad Cyclogram",
     ],
     rewardText: ["(+2)", "(+2)"],
+    version: 1.3,
     evalFunction: (
-      words: string[],
+      _words: string[],
       domainWords: string[],
       spellLength: number
     ): number => {
-      const uniqueSize = new Set(domainWords).size;
-      if (spellLength < 2 || uniqueSize === 1) {
-        // Avoid calculations if only one word or single domain
-        return 0;
-      }
-      const domainWordsId = domainWords.map((word) => {
-        const cleanWord = word as unknown as ValidPowerWordDomain;
-        return cyclogram[cleanWord]?.id;
-      });
-      const reversedDomainWordsId = [...domainWordsId].reverse();
-      const checkClockwise = [];
-      for (let i = 0; i < domainWordsId.length; i++) {
-        const current = domainWordsId[i];
-        const next =
-          i + 1 < domainWordsId.length
-            ? domainWordsId[i + 1]
-            : domainWordsId[0];
-        const nextIsHigher = next > current || (current === 8 && next < 8);
-        checkClockwise[i] = nextIsHigher;
-      }
-      const checkAntiClockwise = [];
-      for (let i = 0; i < reversedDomainWordsId.length; i++) {
-        const current = reversedDomainWordsId[i];
-        const next =
-          i + 1 < reversedDomainWordsId.length
-            ? reversedDomainWordsId[i + 1]
-            : reversedDomainWordsId[0];
-        const nextIsHigher = next > current || (current === 8 && next < 8);
-        checkAntiClockwise[i] = nextIsHigher;
-      }
-      const clockwise = checkClockwise.every((c) => c);
-      const antiClockwise = checkAntiClockwise.every((c) => c);
       const reward = 2;
-      return clockwise || antiClockwise ? reward : 0;
-    },
-  },
-  {
-    formulaName: PowerRules.PENTARCHIAL,
-    name: ["Pentarquial", "Pentarchial"],
-    description: [
-      "Donde usando el diagrama como referencia, un pentagrama puede ser dibujando conectando cada Palabra en orden",
-      "For which, on the Octad Cyclogram, a uniform pentagram can be drawn by connecting with a straight line the domain of each Word in order",
-    ],
-    rewardText: ["(+5)", "(+5)"],
-    evalFunction: (
-      words: string[],
-      domainWords: string[],
-      spellLength: number
-    ): number => {
       const uniqueSize = new Set(domainWords).size;
-      if (spellLength < 5 || uniqueSize < 5) {
-        // Avoid calculations if less than 5 words or 5 different domains
+      if (spellLength === 1 || uniqueSize === 1) {
         return 0;
+      } else if (spellLength === 2 && uniqueSize === 2) {
+        return reward;
       }
-      const domainWordsId = domainWords.map((word) => {
+      const domainPositions = domainWords.map((word) => {
         const cleanWord = word as unknown as ValidPowerWordDomain;
         return cyclogram[cleanWord]?.id;
       });
-      const reversedDomainWordsId = [...domainWordsId].reverse();
-      const checkClockwise = [];
-      for (let i = 0; i < domainWordsId.length; i++) {
-        const current = domainWordsId[i];
-        const next =
-          i + 1 < domainWordsId.length
-            ? domainWordsId[i + 1]
-            : domainWordsId[0];
-        const nextIsHigher = next > current || (current === 8 && next < 8);
-        checkClockwise[i] = nextIsHigher;
-      }
-      const checkAntiClockwise = [];
-      for (let i = 0; i < reversedDomainWordsId.length; i++) {
-        const current = reversedDomainWordsId[i];
-        const next =
-          i + 1 < reversedDomainWordsId.length
-            ? reversedDomainWordsId[i + 1]
-            : reversedDomainWordsId[0];
-        const nextIsHigher = next > current || (current === 8 && next < 8);
-        checkAntiClockwise[i] = nextIsHigher;
-      }
-      const clockwise = checkClockwise.every((c) => c);
-      const antiClockwise = checkAntiClockwise.every((c) => c);
-      const reward = 5;
-      return clockwise || antiClockwise ? reward : 0;
+
+      let totalRotation = 0;
+      let extraRotation = 0;
+      const directionList = domainPositions.map((current, idx, arr) => {
+        const last = idx + 1 === arr.length;
+        const nextIdx = last ? 0 : idx + 1;
+        const next = arr[nextIdx];
+        let diff = next - current;
+        if (current > 4 && next <= 4) {
+          // is looping!
+          diff = 8 - current + next;
+        }
+        if (diff === 0) {
+          return "[-]";
+        }
+        if (diff === 4) {
+          // same distance from everywhere
+          extraRotation += diff;
+          return "[<->]";
+        }
+        if (diff > 0 && diff < 4) {
+          totalRotation += !last ? diff : 0;
+          return "->";
+        } else {
+          totalRotation -= !last ? diff : 0;
+          return "<-";
+        }
+      });
+      const filtered = directionList
+        .slice(0, -1) // ignore the last element (we don't care about looping)
+        .filter((dir) => dir !== "[<->]"); // no matter their direction!
+
+      const verify = filtered.every((dir) => {
+        return dir === filtered[0];
+      });
+
+      const singleLoop = Math.abs(totalRotation) + extraRotation <= 8;
+
+      return verify && singleLoop ? reward : 0;
     },
   },
-  // TODO: Complete this formula
-  {
-    formulaName: PowerRules.QUINESSCENT,
-    name: ["Quiescente", "Quinesscent"],
-    description: [
-      "Usando el diagrama como referencia, una linea recta puede dibujarse entre los dominios de cada Palabra en orden, nunca conectando dos dominios analogos o cruzando sobre la lineas anteriores",
-      "For which a straight line can be drawn between the domains of each Word in order without connecting two analogous domains or crossing over the line",
-    ],
-    rewardText: ["(+4, minimo 3 Palabras)", "(+4, minimum 3 words)"],
-    evalFunction: (
-      words: string[],
-      domainWords: string[],
-      spellLength: number
-    ): number => {
-      const reward = 4;
-      return 0;
-    },
-  },
+  // {
+  //   formulaName: PowerRules.PENTARCHIAL,
+  //   name: ["Pentarquial", "Pentarchial"],
+  //   description: [
+  //     "Donde usando el diagrama como referencia, un pentagrama puede ser dibujando conectando cada Palabra en orden",
+  //     "For which, on the Octad Cyclogram, a uniform pentagram can be drawn by connecting with a straight line the domain of each Word in order",
+  //   ],
+  //   rewardText: ["(+5)", "(+5)"],
+  //   evalFunction: (
+  //     words: string[],
+  //     domainWords: string[],
+  //     spellLength: number
+  //   ): number => {
+  //     const uniqueSize = new Set(domainWords).size;
+  //     if (spellLength !== 5 || uniqueSize !== 5) {
+  //       // Avoid calculations if not a 5 words / 5 different domains case
+  //       return 0;
+  //     }
+  //     // !IMPORTANT: Complete this formula
+  //     return 0;
+  //   },
+  // },
+  // {
+  //   formulaName: PowerRules.QUINESSCENT,
+  //   name: ["Quiescente", "Quinesscent"],
+  //   description: [
+  //     "Usando el diagrama como referencia, una linea recta puede dibujarse entre los dominios de cada Palabra en orden, nunca conectando dos dominios analogos o cruzando sobre la lineas anteriores",
+  //     "For which a straight line can be drawn between the domains of each Word in order without connecting two analogous domains or crossing over the line",
+  //   ],
+  //   rewardText: ["(+4, minimo 3 Palabras)", "(+4, minimum 3 words)"],
+  //   evalFunction: (
+  //     words: string[],
+  //     domainWords: string[],
+  //     spellLength: number
+  //   ): number => {
+  //     const uniqueSize = new Set(domainWords).size;
+  //     if (spellLength < 3 || uniqueSize < 3) {
+  //       // Avoid calculations if not a at least 3 words / 3 different domains
+  //       return 0;
+  //     }
+  //     return 0;
+  //   },
+  // },
   {
     formulaName: PowerRules.REFRACTIVE,
     name: ["Refractivo", "Refractive"],
     description: [
-      "Contiene una Palabra y una correspondiente diametricamente opuesta",
+      "Contiene una Palabra y una opuesta que le corresponde",
       "Which contains a Word with a corresponding diametric Word",
     ],
     rewardText: ["(+1/pareja)", "(+1/pair)"],
-    evalFunction: (
-      words: string[],
-      domainWords: string[],
-      spellLength: number
-    ): number => {
+    evalFunction: (words: string[], domainWords: string[]): number => {
       let hits = 0;
       domainWords.forEach((domain) => {
         const clean = domain as unknown as ValidPowerWordDomain;
         const opposite = cyclogram[clean]?.opposite;
-        const found = domainWords.findIndex((w) => {
-          return (w = opposite);
+        const foundIdx = domainWords.findIndex((w) => {
+          return w === opposite;
         });
-        if (found > -1) {
+        if (foundIdx > -1) {
           hits++;
         }
       });
@@ -489,33 +501,35 @@ export const ruleList: validRule[] = [
       "Which contains only a single inverted word",
     ],
     rewardText: ["(+1)", "(+1)"],
+    version: 1.1,
     evalFunction: (
-      words: string[],
-      domainWords: string[],
-      spellLength: number,
+      _words: string[],
+      _domainWords: string[],
+      _spellLength: number,
       invertedWords?: boolean[]
     ): number => {
-      const one = invertedWords && invertedWords.some((word) => word);
-      return one ? 1 : 0;
+      const singleInvertedWord =
+        invertedWords && invertedWords.filter((w) => w).length === 1;
+      return singleInvertedWord ? 1 : 0;
     },
   },
   // TODO: Complete this formula
-  {
-    formulaName: PowerRules.TRIVECTANT,
-    name: ["Trivectante", "Trivectant"],
-    description: [
-      "El numero de dominios 'vacio' entre cada Palabra suman hasta 5 y no hay Palabras analogas",
-      "For which the number of domains between the domains of each Word sum to 5, and for which no two Words are analogous",
-    ],
-    rewardText: ["(+3)", "(+3)"],
-    evalFunction: (
-      words: string[],
-      domainWords: string[],
-      spellLength: number
-    ): number => {
-      return 0;
-    },
-  },
+  // {
+  //   formulaName: PowerRules.TRIVECTANT,
+  //   name: ["Trivectante", "Trivectant"],
+  //   description: [
+  //     "El numero de dominios 'vacio' entre cada Palabra suman hasta 5 y no hay Palabras analogas",
+  //     "For which the number of domains between the domains of each Word sum to 5, and for which no two Words are analogous",
+  //   ],
+  //   rewardText: ["(+3)", "(+3)"],
+  //   evalFunction: (
+  //     _words: string[],
+  //     domainWords: string[],
+  //     spellLength: number
+  //   ): number => {
+  //     return 0;
+  //   },
+  // },
   {
     formulaName: PowerRules.UNDULANT,
     name: ["Undulante", "Undulant"],
@@ -525,8 +539,8 @@ export const ruleList: validRule[] = [
     ],
     rewardText: ["(+3)", "(+3)"],
     evalFunction: (
-      words: string[],
-      domainWords: string[],
+      _words: string[],
+      _domainWords: string[],
       spellLength: number
     ): number => {
       switch (spellLength) {
@@ -549,13 +563,14 @@ export const ruleList: validRule[] = [
     ],
     rewardText: ["(+1/Palabra, maximo +4)", "(+1/Word, up to +4)"],
     evalFunction: (
-      words: string[],
+      _words: string[],
       domainWords: string[],
       spellLength: number
     ): number => {
       const reward = spellLength > 4 ? 4 : spellLength;
       const uniqueDomains = new Set(domainWords);
       if (uniqueDomains.size > 2) {
+        // Avoid calculate if the spread will be more than 2 domains
         return 0;
       }
       const arr = Array.from(uniqueDomains);
@@ -569,23 +584,18 @@ export const ruleList: validRule[] = [
     },
   },
   // TODO: Complete this formula
-  {
-    formulaName: PowerRules.WENDING,
-    name: ["Wendi", "Wending"],
-    description: [
-      "Dos o más Palabras son analogas, y exactamente 1 Palabra es opuesta a una de las analogas",
-      "For which two or more words are analogous, and exactly one is diametric to one of the analogous words",
-    ],
-    rewardText: ["(+2)", "(+2)"],
-    evalFunction: (
-      words: string[],
-      domainWords: string[],
-      spellLength: number
-    ): number => {
-      const reward = 2;
-      return 0;
-    },
-  },
+  // {
+  //   formulaName: PowerRules.WENDING,
+  //   name: ["Wendi", "Wending"],
+  //   description: [
+  //     "Dos o más Palabras son analogas, y exactamente 1 Palabra es opuesta a una de las analogas",
+  //     "For which two or more words are analogous, and exactly one is diametric to one of the analogous words",
+  //   ],
+  //   rewardText: ["(+2)", "(+2)"],
+  //   evalFunction: (): number => {
+  //     return 0;
+  //   },
+  // },
   {
     formulaName: PowerRules.XENOETHICAL,
     name: ["Xenoetico", "Xenoethical"],
@@ -595,9 +605,9 @@ export const ruleList: validRule[] = [
     ],
     rewardText: ["(+1)", "(+1)"],
     evalFunction: (
-      words: string[],
+      _words: string[],
       domainWords: string[],
-      spellLength: number
+      _spellLength: number
     ): number => {
       const reward = 1;
       const allWest = domainWords.every((word) => {
@@ -621,30 +631,28 @@ export const ruleList: validRule[] = [
     rewardText: ["(+1 por letra de una Palabra)", "(+1 each letter in a word)"],
     evalFunction: (
       words: string[],
-      domainWords: string[],
-      spellLength: number
+      _domainWords: string[],
+      _spellLength: number
     ): number => {
-      return 0
+      if (words.length < 1) {
+        return 0;
+      }
       const len = words[0].length;
       const check = words.every((word) => word.length === len);
       return check ? len : 0;
     },
   },
   // TODO: Complete this formula
-  {
-    formulaName: PowerRules.ZYGAPOPHYTIC,
-    name: ["Zygapofítico", "Zygapophytic"],
-    description: [
-      "Todas las Palabras del hechizo tienen una Palabra correspondiente que es analoga a su dominio opuesto",
-      "Whose constituent Words have a corresponding Word that is analogous to its diametric domain",
-    ],
-    rewardText: ["(+1/pareja)", "(+1/pair)"],
-    evalFunction: (
-      words: string[],
-      domainWords: string[],
-      spellLength: number
-    ): number => {
-      return 0;
-    },
-  },
+  // {
+  //   formulaName: PowerRules.ZYGAPOPHYTIC,
+  //   name: ["Zygapofítico", "Zygapophytic"],
+  //   description: [
+  //     "Todas las Palabras del hechizo tienen una Palabra correspondiente que es analoga a su dominio opuesto",
+  //     "Whose constituent Words have a corresponding Word that is analogous to its diametric domain",
+  //   ],
+  //   rewardText: ["(+1/pareja)", "(+1/pair)"],
+  //   evalFunction: (): number => {
+  //     return 0;
+  //   },
+  // },
 ];

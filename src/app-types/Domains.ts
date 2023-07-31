@@ -18,35 +18,35 @@ export const domainList = [
     formulaName: '',
   },
   {
-    name: ["Abjuración", "Abjuration"],
+    name: ["Abjuración (3)", "Abjuration"],
     formulaName: PowerWordDomain.ABJURATION,
   },
   {
-    name: ["Conjuración", "Conjuration"],
+    name: ["Conjuración (7)", "Conjuration"],
     formulaName: PowerWordDomain.CONJURATION,
   },
   {
-    name: ["Divinación", "Divination"],
+    name: ["Divinación (2)", "Divination"],
     formulaName: PowerWordDomain.DIVINATION,
   },
   {
-    name: ["Encantamiento", "Enchantment"],
+    name: ["Encantamiento (4)", "Enchantment"],
     formulaName: PowerWordDomain.ENCHANTMENT,
   },
   {
-    name: ["Evocación", "Evocation"],
+    name: ["Evocación (8)", "Evocation"],
     formulaName: PowerWordDomain.EVOCATION,
   },
   {
-    name: ["Ilusión", "Ilusion"],
+    name: ["Ilusión (1)", "Ilusion"],
     formulaName: PowerWordDomain.ILUSION,
   },
   {
-    name: ["Necromancia", "Necromancy"],
+    name: ["Necromancia (6)", "Necromancy"],
     formulaName: PowerWordDomain.NECROMANCY,
   },
   {
-    name: ["Transmutación", "Transmutation"],
+    name: ["Transmutación (5)", "Transmutation"],
     formulaName: PowerWordDomain.TRANSMUTATION,
   },
 ];
