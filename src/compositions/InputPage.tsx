@@ -30,7 +30,7 @@ export const InputPage = ({ state, choosenLang, dispatch }: Props) => {
     });
   };
 
-  const offSet = [0, 3, 6, 9, 12];
+  const offSet = [0, 2, 4, 6, 8, 10];
   const spellLengthArray = Array.from({ length: state.spellLength });
 
   // Split the array into chunks of a specified size
@@ -41,7 +41,7 @@ export const InputPage = ({ state, choosenLang, dispatch }: Props) => {
     }
     return chunkedArray;
   };
-  const chunksOfThree = chunkArray(spellLengthArray, 3);
+  const chunksOfTwo = chunkArray(spellLengthArray, 2);
 
   /*
   useEffect(() => {
@@ -63,27 +63,41 @@ export const InputPage = ({ state, choosenLang, dispatch }: Props) => {
           max={9}
         />
       </div>
-      {chunksOfThree.map((chunk, i) => (
+      {chunksOfTwo.map((chunk, i) => (
         <div key={i} className="flex space-x-4">
           {chunk.map((_unused: any, innerIndex: number) => (
             <div
               key={innerIndex}
               className={chunk.length > 1 ? `w-1/${chunk.length}` : "w-full"}
             >
-              <Dropdown
-                key={innerIndex + offSet[i] + 1}
-                title={[
-                  `#${innerIndex + offSet[i] + 1}`,
-                  `#${innerIndex + offSet[i] + 1}`,
-                ]}
-                options={domainList}
-                chosenLang={choosenLang}
-                changeFn={(newValue: any) =>
-                  changeDomain(newValue, innerIndex + offSet[i])
-                }
-                selection={state.words[innerIndex + offSet[i]]}
-                disabled={state.showResults}
-              />
+              <div>
+                <Dropdown
+                  key={innerIndex + offSet[i] + 1}
+                  title={[
+                    `#${innerIndex + offSet[i] + 1}`,
+                    `#${innerIndex + offSet[i] + 1}`,
+                  ]}
+                  options={domainList}
+                  chosenLang={choosenLang}
+                  changeFn={(newValue: any) =>
+                    changeDomain(newValue, innerIndex + offSet[i])
+                  }
+                  selection={state.words[innerIndex + offSet[i]]}
+                  disabled={state.showResults}
+                />
+              </div>
+              <label className="flex justify-between">
+                <input type="checkbox" name="subscribe" value="assonance" />{" "}
+                <span className="text-sm">Assonance</span>
+              </label>
+              <label className="flex justify-between">
+                <input type="checkbox" name="subscribe" value="rythm" />
+                <span className="text-sm">Rythm</span>
+              </label>
+              <label className="flex justify-between">
+                <input type="checkbox" name="subscribe" value="inverted" />
+                <span className="text-sm">Inverted</span>
+              </label>
             </div>
           ))}
         </div>
@@ -91,7 +105,7 @@ export const InputPage = ({ state, choosenLang, dispatch }: Props) => {
 
       <div className="flex justify-center mt-4">
         <div className="w-full">
-          <small style={{fontSize: "10px"}}>
+          <small style={{ fontSize: "10px" }}>
             <pre>{JSON.stringify({ ...state.results }, null, 2)}</pre>
           </small>
         </div>
