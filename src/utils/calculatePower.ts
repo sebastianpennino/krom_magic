@@ -1,3 +1,4 @@
+import { ValidPowerWordDomain, cyclogram } from "../app-types/Domains";
 import { PowerRules, ruleList } from "../app-types/PowerRules";
 
 type RulesObject = {
@@ -58,21 +59,43 @@ const defaultRulesObject = {
   [PowerRules.ZYGAPOPHYTIC]: 0,
 };
 
+const findOppositeWord = (word: string) => {
+  const cleanWord = word as unknown as ValidPowerWordDomain;
+  return cyclogram[cleanWord]?.opposite;
+};
+
 // Given current words returns all the possible rules and points
 export const calculatePower = (
   chosenLang: number,
-  words: string[],
+  detailedWords: string[],
   domainWords: string[],
-  spellLength: number
+  spellLength: number,
+  invertedWords: boolean[],
+  assonanceWords?: boolean[],
+  rhymingWords?: boolean[],
+  isGracious?: boolean
 ) => {
-  const cleanDomainWords = domainWords.slice(0, spellLength);
+  const cleanDetailedWords = detailedWords.slice(0, spellLength);
+  const cleanInvertedWords = invertedWords.slice(0, spellLength);
+  const cleanDomainWords = domainWords.slice(0, spellLength).map((w, idx) => {
+    if (cleanInvertedWords[idx] === true) {
+      return findOppositeWord(w);
+    }
+    return w;
+  });
+
   const rst = ruleList.map((element) => {
     return {
       name: element.name[chosenLang],
       letter: element.name[chosenLang].charAt(0).toLowerCase(),
       description: element.description[chosenLang],
       rewardText: element.rewardText[chosenLang],
-      score: element.evalFunction(words, cleanDomainWords, spellLength),
+      score: element.evalFunction(
+        cleanDetailedWords,
+        cleanDomainWords,
+        spellLength,
+        cleanInvertedWords
+      ),
     };
   });
   const realScore = rst
@@ -85,8 +108,8 @@ export const calculatePower = (
     return rst + cur.score;
   }, 0);
   return {
-    // total: totalScore,
     realScore,
+    totalPotential: totalScore,
     pickedRules: rst
       // .filter((l) => l.letter === "q") // for testing
       .filter((rst) => rst.score > 0)

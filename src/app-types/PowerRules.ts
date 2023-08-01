@@ -74,28 +74,27 @@ export const ruleList: validRule[] = [
       return same ? reward : 0;
     },
   },
-  // TODO: waiting for individual words functionality
-  // {
-  //   formulaName: PowerRules.BABELOUS,
-  //   name: ["Babelinosa", "Babelous"],
-  //   description: [
-  //     "Cada Palabra del hechizo comienza con la misma letra del alfabeto",
-  //     "For which every Word begins with the same letter of the alphabet",
-  //   ],
-  //   rewardText: ["(+1/Palabra)", "(+1/Word)"],
-  //   evalFunction: (
-  //     words: string[],
-  //     _domainWords: string[],
-  //     spellLength: number
-  //   ): number => {
-  //     return 0;
-  //     const firstLetter = words[0].charAt(0);
-  //     const allWordsStartWithFirstLetter = words.every((chosenWord) => {
-  //       return firstLetter === chosenWord.charAt(0);
-  //     });
-  //     return allWordsStartWithFirstLetter ? spellLength : 0;
-  //   },
-  // },
+  {
+    formulaName: PowerRules.BABELOUS,
+    name: ["Babelinosa", "Babelous"],
+    description: [
+      "Cada Palabra del hechizo comienza con la misma letra del alfabeto",
+      "For which every Word begins with the same letter of the alphabet",
+    ],
+    rewardText: ["(+1/Palabra)", "(+1/Word)"],
+    version: 1.1,
+    evalFunction: (
+      words: string[],
+      _domainWords: string[],
+      spellLength: number
+    ): number => {
+      const firstLetter = words[0].charAt(0);
+      const allWordsStartWithFirstLetter = words.every((chosenWord) => {
+        return firstLetter === chosenWord.charAt(0);
+      });
+      return allWordsStartWithFirstLetter ? spellLength : 0;
+    },
+  },
   {
     formulaName: PowerRules.COMPOUND,
     name: ["Compuesta", "Compound"],
@@ -284,23 +283,31 @@ export const ruleList: validRule[] = [
       return allNorth || allSouth ? reward : 0;
     },
   },
-  // TODO: No idea how to proceed. Investigate.
-  // {
-  //   formulaName: PowerRules.KYMOIAMBIC,
-  //   name: ["Kymoiambico", "Kymoiambic"],
-  //   description: [
-  //     "Las Palabras estan organizadas en un metro yámbico",
-  //     "for which the spell’s Words are organized into iambic meter",
-  //   ],
-  //   rewardText: ["(+1/Palabra)", "(+1/Word)"],
-  //   evalFunction: (
-  //     words: string[],
-  //     domainWords: string[],
-  //     spellLength: number
-  //   ): number => {
-  //     return 0; // Replace this with logic
-  //   },
-  // },
+  // !IMPORTANT: This rule has been changed to a totally different new thing
+  {
+    formulaName: PowerRules.KYMOIAMBIC,
+    name: ["Kymoiambico", "Kymoiambic"],
+    description: [
+      "Todas las Palabras pertenencen a dominios pares o impares",
+      "for which all the Words belong to either even or odd domains",
+    ],
+    rewardText: ["(+1/Palabra), max 4", "(+1/Word), max 4"],
+    evalFunction: (
+      _words: string[],
+      domainWords: string[],
+      spellLength: number
+    ): number => {
+      const reward = spellLength > 4 ? 4 : spellLength;
+      const domainIds = domainWords.map((w) => {
+        const cleanWord = w as unknown as ValidPowerWordDomain;
+        return cyclogram[cleanWord]?.id;
+      });
+      const allEven = domainIds.every((num) => num % 2 === 0);
+      const allOdd = domainIds.every((num) => num % 2 !== 0);
+
+      return allEven || allOdd ? reward : 0;
+    },
+  },
   {
     formulaName: PowerRules.LEXICAL,
     name: ["Lexico", "Lexical"],
@@ -338,7 +345,8 @@ export const ruleList: validRule[] = [
       invertedWords?: boolean[]
     ): number => {
       const allInverted =
-        (invertedWords && invertedWords.every((w) => w)) ?? false;
+        (invertedWords && invertedWords.every((w) => w === true)) ?? false;
+      console.log(invertedWords)
       return allInverted ? spellLength : 0;
     },
   },
@@ -477,7 +485,11 @@ export const ruleList: validRule[] = [
       "Which contains a Word with a corresponding diametric Word",
     ],
     rewardText: ["(+1/pareja)", "(+1/pair)"],
-    evalFunction: (words: string[], domainWords: string[]): number => {
+    evalFunction: (
+      _words: string[],
+      domainWords: string[],
+      _spellLength: number
+    ): number => {
       let hits = 0;
       domainWords.forEach((domain) => {
         const clean = domain as unknown as ValidPowerWordDomain;
@@ -508,9 +520,10 @@ export const ruleList: validRule[] = [
       _spellLength: number,
       invertedWords?: boolean[]
     ): number => {
-      const singleInvertedWord =
-        invertedWords && invertedWords.filter((w) => w).length === 1;
-      return singleInvertedWord ? 1 : 0;
+      const invertedWordsOnly =
+        invertedWords && invertedWords.filter((w) => w === true);
+      console.log('inverted words: ', invertedWordsOnly?.length)
+      return invertedWordsOnly?.length === 1 ? 1 : 0;
     },
   },
   // TODO: Complete this formula

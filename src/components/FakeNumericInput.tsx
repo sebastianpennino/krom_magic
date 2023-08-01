@@ -14,6 +14,7 @@ export const FakeNumericInput = ({
   changeFn,
   value,
 }: Props) => {
+
   const decrement = () => {
     if (value > min) {
       changeFn(value - 1);

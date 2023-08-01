@@ -6,20 +6,43 @@ import { AppState } from "../App";
 import { FakeNumericInput } from "../components/FakeNumericInput";
 import { useEffect } from "react";
 import { calculatePower } from "../utils/calculatePower";
+import { CheckBox } from "../components/CheckBox";
 
 type Props = {
   state: AppState;
-  choosenLang: number;
+  chosenLang: number;
   spellName?: string;
   dispatch: any;
 };
 
 // The input page lets you make choices to create the spell
-export const InputPage = ({ state, choosenLang, dispatch }: Props) => {
+export const InputPage = ({ state, chosenLang, dispatch }: Props) => {
+  // Word Domain
   const changeDomain = (newValue: any, position: number) => {
     dispatch({
       type: SpellAction.CHANGE_DOMAIN,
       payload: { val: newValue, pos: position },
+    });
+  };
+  // Word
+  const changeWord = (newValue: any, position: number) => {
+    dispatch({
+      type: SpellAction.CHANGE_WORD,
+      payload: { val: newValue, pos: position },
+    });
+  };
+
+  const changeInverted = (newValue: any, position: number) => {
+    dispatch({
+      type: SpellAction.SWITCH_POLARITY,
+      payload: { val: newValue, pos: position },
+    });
+  };
+
+  const changeSpellName = (newValue: any) => {
+    dispatch({
+      type: SpellAction.CHANGE_NAME,
+      payload: newValue,
     });
   };
 
@@ -30,79 +53,107 @@ export const InputPage = ({ state, choosenLang, dispatch }: Props) => {
     });
   };
 
-  const offSet = [0, 2, 4, 6, 8, 10];
   const spellLengthArray = Array.from({ length: state.spellLength });
 
-  // Split the array into chunks of a specified size
-  const chunkArray = (arr: any[], size: number) => {
-    const chunkedArray = [];
-    for (let i = 0; i < arr.length; i += size) {
-      chunkedArray.push(arr.slice(i, i + size));
-    }
-    return chunkedArray;
-  };
-  const chunksOfTwo = chunkArray(spellLengthArray, 2);
+  const calculateColSpan = (i: number, len: number) => {
+    const totalColumns = 12;
+    const mod = [len % 4, len % 3, len % 2]; // 0-3, 0-2, 0-1
+    const isLastRow = [len - i <= mod[0], len - i <= mod[1], len - i <= mod[2]];
+    const lgCols = isLastRow[0] ? totalColumns / mod[0] : 3; // default: 4 columns
+    const mdCols = isLastRow[1] ? totalColumns / mod[1] : 4; // default: 3 columns
+    const smCols = isLastRow[2] ? totalColumns / mod[2] : 6; // default: 2 columns
 
-  /*
-  useEffect(() => {
-    calculatePower(choosenLang, [], state.words, state.spellLength);
-  }, [choosenLang, state.words, state.spellLength]);
-  */
+    return `col-span-${smCols} md:col-span-${mdCols} lg:col-span-${lgCols}`;
+  };
+
+  const wordOrderList = [
+    ["Primera", "First"],
+    ["Segunda", "Second"],
+    ["Tercera", "Third"],
+    ["Cuarta", "Fourth"],
+    ["Quinta", "Fifth"],
+    ["Sexta", "Sixth"],
+    ["Séptima", "Seventh"],
+    ["Octava", "Eighth"],
+    ["Novena", "Ninth"],
+    ["Décima", "Tenth"],
+    ["Undécima", "Eleventh"],
+    ["Duodécima", "Twelfth"],
+  ];
 
   return (
     <>
       <div>
-        <TextInput chosenLang={choosenLang} value={state.spellName} />
+        <TextInput
+          title={[
+            "Nombre del hechizo (sin espacios)",
+            "Spell Name (no spaces)",
+          ]}
+          placeholder={["Ingresa un nombre", "Enter your spell name"]}
+          chosenLang={chosenLang}
+          value={state.spellName}
+          changeFn={(w: any) => changeSpellName(w)}
+          centered
+        />
       </div>
       <div className="flex space-x-4">
         <FakeNumericInput
-          title={["Palabras:", "Words:"][choosenLang]}
+          title={["Palabras:", "Words:"][chosenLang]}
           changeFn={changeSpellLength}
           value={state.spellLength}
           min={1}
-          max={9}
+          max={12}
         />
       </div>
-      {chunksOfTwo.map((chunk, i) => (
-        <div key={i} className="flex space-x-4">
-          {chunk.map((_unused: any, innerIndex: number) => (
-            <div
-              key={innerIndex}
-              className={chunk.length > 1 ? `w-1/${chunk.length}` : "w-full"}
-            >
-              <div>
-                <Dropdown
-                  key={innerIndex + offSet[i] + 1}
-                  title={[
-                    `#${innerIndex + offSet[i] + 1}`,
-                    `#${innerIndex + offSet[i] + 1}`,
-                  ]}
-                  options={domainList}
-                  chosenLang={choosenLang}
-                  changeFn={(newValue: any) =>
-                    changeDomain(newValue, innerIndex + offSet[i])
-                  }
-                  selection={state.words[innerIndex + offSet[i]]}
-                  disabled={state.showResults}
-                />
-              </div>
-              <label className="flex justify-between">
-                <input type="checkbox" name="subscribe" value="assonance" />{" "}
-                <span className="text-sm">Assonance</span>
-              </label>
-              <label className="flex justify-between">
-                <input type="checkbox" name="subscribe" value="rythm" />
-                <span className="text-sm">Rythm</span>
-              </label>
-              <label className="flex justify-between">
-                <input type="checkbox" name="subscribe" value="inverted" />
-                <span className="text-sm">Inverted</span>
-              </label>
-            </div>
-          ))}
-        </div>
-      ))}
-
+      <div className="grid grid-cols-12 gap-4 mt-4">
+        {spellLengthArray.map((_el, i) => (
+          <div key={i} className={calculateColSpan(i, spellLengthArray.length)}>
+            <Dropdown
+              key={i + 1}
+              title={wordOrderList[i]}
+              options={domainList}
+              chosenLang={chosenLang}
+              changeFn={(newValue: any) => changeDomain(newValue, i)}
+              selection={state.domainWords[i]}
+              disabled={state.showResults}
+            />
+            <TextInput
+              chosenLang={chosenLang}
+              value={state.detailedWords[i]}
+              changeFn={(newValue: any) => changeWord(newValue, i)}
+            />
+            <label className="flex mt-1">
+              <input type="checkbox" name="assonance" value="assonance" />{" "}
+              <span className="text-sm">
+                &nbsp;{["Asonante", "Assonant"][chosenLang]}
+              </span>
+            </label>
+            <label className="flex mt-1">
+              <input type="checkbox" name="rythm" value="rythm" />
+              <span className="text-sm">
+                &nbsp;{["Rima", "Rythm"][chosenLang]}
+              </span>
+            </label>
+            <label className="flex mt-1">
+              <input
+                type="checkbox"
+                name="inverted"
+                defaultChecked={state.invertedWords[i]}
+              />
+              <span className="text-sm">
+                &nbsp;{["Invertida", "Inverted"][chosenLang]}
+              </span>
+            </label>
+            <CheckBox 
+              chosenLang={chosenLang}
+              uniqueId={`inverted-${i}`}
+              defaultChecked={state.invertedWords[i]}
+              changeFn={(newValue: any) => changeInverted(newValue, i)}
+              title={["Invertida", "Inverted"]}
+            />
+          </div>
+        ))}
+      </div>
       <div className="flex justify-center mt-4">
         <div className="w-full">
           <small style={{ fontSize: "10px" }}>

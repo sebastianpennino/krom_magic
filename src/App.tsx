@@ -16,16 +16,21 @@ const defaultLang = langs.esp;
 export type AppState = {
   showResults: boolean;
   spellName: string;
-  words: string[];
+  domainWords: string[];
+  detailedWords: string[];
   spellLength: number;
   results: any;
+  invertedWords: boolean[];
+  assonanceWords?: boolean[];
+  rhymingWords?: boolean[];
+  isGracious?: boolean;
 };
 
 export const initialState: AppState = {
   showResults: false,
   spellName: "",
-  words: [
-    PowerWordDomain.ILUSION ,
+  domainWords: [
+    PowerWordDomain.ILUSION,
     PowerWordDomain.TRANSMUTATION,
     PowerWordDomain.NECROMANCY,
     PowerWordDomain.EVOCATION,
@@ -35,8 +40,10 @@ export const initialState: AppState = {
     "",
     "",
   ],
+  detailedWords: Array.from({ length: 12 }, () => ""),
   spellLength: 4,
   results: null,
+  invertedWords: Array.from({ length: 12 }, () => false),
 };
 
 function App() {
@@ -45,7 +52,21 @@ function App() {
     initialState
   );
 
-  const [choosenLang, setLang] = useState<number>(defaultLang);
+  const resetAllExceptWordCount = () => {
+    dispatch({
+      type: SpellAction.RESET_STATE,
+      payload: initialState,
+    });
+  };
+
+  const updateResults = () => {
+    dispatch({
+      type: SpellAction.UPDATE_RESULTS,
+      payload: chosenLang,
+    });
+  };
+
+  const [chosenLang, setLang] = useState<number>(defaultLang);
 
   return (
     <div className="flex flex-col h-screen">
@@ -58,7 +79,7 @@ function App() {
           <h1 className="text-sm">Kromsys Spell Creator</h1>
         </div>
         <div className="text-white">
-          <FlagButton toggleFn={setLang} currentValue={choosenLang} />
+          <FlagButton toggleFn={setLang} currentValue={chosenLang} />
         </div>
       </header>
 
@@ -67,44 +88,48 @@ function App() {
         {!state.showResults ? (
           <InputPage
             state={state}
-            choosenLang={choosenLang}
+            chosenLang={chosenLang}
             dispatch={dispatch}
           />
         ) : (
-          <ResultsPage state={state} choosenLang={choosenLang} />
+          <ResultsPage state={state} chosenLang={chosenLang} />
         )}
       </main>
+
+      {/* <div>
+        {JSON.stringify(state, null, 2)}
+      </div> */}
 
       {/* Footer */}
       <footer className="bg-stone-950 py-4 px-4 flex justify-center sticky bottom-0">
         <button
           className="w-1/2 lg:w-1/3 px-4 py-2 text-white text-sm mr-4"
           onClick={() => {
-            console.log("A");
+            resetAllExceptWordCount();
           }}
         >
-          {["< Limpiar", "< Clean up"][choosenLang]}
+          {["Limpiar todo", "Reset"][chosenLang]}
         </button>
         <button
           className="w-1/2 lg:w-1/3 px-4 py-2 text-white text-sm"
           onClick={() => {
-            const oneIsEmpty = state.words
+            const oneIsEmpty = state.domainWords
               .slice(0, state.spellLength)
               .filter((w) => {
                 return w !== "";
               });
             if (oneIsEmpty.length !== state.spellLength) {
               return alert(
-                "Error: Can't process your request, some words are not selected. All must have a domain selected"
+                [
+                  "Error: falta elegir Palabras",
+                  "Error: Some Words are not selected",
+                ][chosenLang]
               );
             }
-            dispatch({
-              type: SpellAction.UPDATE_RESULTS,
-              payload: choosenLang,
-            });
+            updateResults();
           }}
         >
-          {["Calcular", "Calculate"][choosenLang]}
+          {["Calcular", "Calculate"][chosenLang]}
         </button>
       </footer>
     </div>

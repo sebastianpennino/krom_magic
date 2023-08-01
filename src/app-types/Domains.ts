@@ -14,40 +14,40 @@ export type ValidPowerWordDomain =
 
 export const domainList = [
   {
-    name: ["-Ninguna-", "-None-"],
+    name: ["...", "..."],
     formulaName: '',
   },
   {
-    name: ["Abjuración (3)", "Abjuration"],
-    formulaName: PowerWordDomain.ABJURATION,
+    name: ["Ilusión (1)", "Ilusion (1)"],
+    formulaName: PowerWordDomain.ILUSION,
   },
   {
-    name: ["Conjuración (7)", "Conjuration"],
-    formulaName: PowerWordDomain.CONJURATION,
-  },
-  {
-    name: ["Divinación (2)", "Divination"],
+    name: ["Divinación (2)", "Divination (2)"],
     formulaName: PowerWordDomain.DIVINATION,
   },
   {
-    name: ["Encantamiento (4)", "Enchantment"],
+    name: ["Abjuración (3)", "Abjuration (3)"],
+    formulaName: PowerWordDomain.ABJURATION,
+  },
+  {
+    name: ["Encantamiento (4)", "Enchantment (4)"],
     formulaName: PowerWordDomain.ENCHANTMENT,
+  },
+  {
+    name: ["Transmutación (5)", "Transmutation (5)"],
+    formulaName: PowerWordDomain.TRANSMUTATION,
+  },
+  {
+    name: ["Necromancia (6)", "Necromancy (6)"],
+    formulaName: PowerWordDomain.NECROMANCY,
+  },
+  {
+    name: ["Conjuración (7)", "Conjuration (7)"],
+    formulaName: PowerWordDomain.CONJURATION,
   },
   {
     name: ["Evocación (8)", "Evocation"],
     formulaName: PowerWordDomain.EVOCATION,
-  },
-  {
-    name: ["Ilusión (1)", "Ilusion"],
-    formulaName: PowerWordDomain.ILUSION,
-  },
-  {
-    name: ["Necromancia (6)", "Necromancy"],
-    formulaName: PowerWordDomain.NECROMANCY,
-  },
-  {
-    name: ["Transmutación (5)", "Transmutation"],
-    formulaName: PowerWordDomain.TRANSMUTATION,
   },
 ];
 
