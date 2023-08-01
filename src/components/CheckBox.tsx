@@ -23,7 +23,7 @@ export const CheckBox = ({
   const [internValue, setValue] = useState<boolean>(defaultChecked);
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const boolVal = Boolean(e.target.value);
+    const boolVal = e.target.checked;
     setValue(boolVal);
     if (changeFn && typeof changeFn === "function") {
       changeFn(boolVal);

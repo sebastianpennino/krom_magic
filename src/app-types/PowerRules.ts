@@ -140,10 +140,10 @@ export const ruleList: validRule[] = [
       _invertedWords?: boolean[],
       assonanceWords?: boolean[]
     ): number => {
-      const assonanceNum =
-        (assonanceWords && assonanceWords.filter((w) => w).length) ?? 0;
-      const reward = assonanceNum * 2;
-      return assonanceNum > 2 ? reward : 0;
+      const assonanceVal =
+        (assonanceWords && assonanceWords.filter((w) => w).length) || 0;
+      const reward = assonanceVal * 2;
+      return assonanceVal >= 2 ? reward : 0;
     },
   },
   {
@@ -253,9 +253,9 @@ export const ruleList: validRule[] = [
       rhymingWords?: boolean[]
     ): number => {
       const rhymingWordsOnly =
-        (rhymingWords && rhymingWords.filter((w) => w)) ?? [];
+        (rhymingWords && rhymingWords.filter((w) => w === true)) ?? [];
       const reward = rhymingWordsOnly.length * 2;
-      return reward > 1 ? reward : 0;
+      return rhymingWordsOnly.length >= 2 ? reward : 0;
     },
   },
   {
@@ -346,7 +346,6 @@ export const ruleList: validRule[] = [
     ): number => {
       const allInverted =
         (invertedWords && invertedWords.every((w) => w === true)) ?? false;
-      console.log(invertedWords)
       return allInverted ? spellLength : 0;
     },
   },
@@ -522,7 +521,6 @@ export const ruleList: validRule[] = [
     ): number => {
       const invertedWordsOnly =
         invertedWords && invertedWords.filter((w) => w === true);
-      console.log('inverted words: ', invertedWordsOnly?.length)
       return invertedWordsOnly?.length === 1 ? 1 : 0;
     },
   },

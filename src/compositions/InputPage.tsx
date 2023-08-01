@@ -1,22 +1,26 @@
-import { Dropdown } from "../components/Dropdown";
-import { TextInput } from "../components/TextInput";
-import { SpellAction } from "../reducers/spellReducer";
-import { domainList } from "../app-types/Domains";
 import { AppState } from "../App";
-import { FakeNumericInput } from "../components/FakeNumericInput";
-import { useEffect } from "react";
-import { calculatePower } from "../utils/calculatePower";
 import { CheckBox } from "../components/CheckBox";
+import { domainList } from "../app-types/Domains";
+import { Dropdown } from "../components/Dropdown";
+import { FakeNumericInput } from "../components/FakeNumericInput";
+import { SpellAction } from "../reducers/spellReducer";
+import { TextInput } from "../components/TextInput";
 
 type Props = {
   state: AppState;
   chosenLang: number;
   spellName?: string;
   dispatch: any;
+  maxSpellLength: number;
 };
 
 // The input page lets you make choices to create the spell
-export const InputPage = ({ state, chosenLang, dispatch }: Props) => {
+export const InputPage = ({
+  state,
+  chosenLang,
+  maxSpellLength,
+  dispatch,
+}: Props) => {
   // Word Domain
   const changeDomain = (newValue: any, position: number) => {
     dispatch({
@@ -35,6 +39,20 @@ export const InputPage = ({ state, chosenLang, dispatch }: Props) => {
   const changeInverted = (newValue: any, position: number) => {
     dispatch({
       type: SpellAction.SWITCH_POLARITY,
+      payload: { val: newValue, pos: position },
+    });
+  };
+
+  const changeAssonant = (newValue: any, position: number) => {
+    dispatch({
+      type: SpellAction.SWITCH_ASSONANCE,
+      payload: { val: newValue, pos: position },
+    });
+  };
+
+  const changeRhyme = (newValue: any, position: number) => {
+    dispatch({
+      type: SpellAction.SWITCH_RHYME,
       payload: { val: newValue, pos: position },
     });
   };
@@ -98,11 +116,11 @@ export const InputPage = ({ state, chosenLang, dispatch }: Props) => {
       </div>
       <div className="flex space-x-4">
         <FakeNumericInput
+          min={1}
+          max={maxSpellLength}
           title={["Palabras:", "Words:"][chosenLang]}
           changeFn={changeSpellLength}
           value={state.spellLength}
-          min={1}
-          max={12}
         />
       </div>
       <div className="grid grid-cols-12 gap-4 mt-4">
@@ -122,29 +140,21 @@ export const InputPage = ({ state, chosenLang, dispatch }: Props) => {
               value={state.detailedWords[i]}
               changeFn={(newValue: any) => changeWord(newValue, i)}
             />
-            <label className="flex mt-1">
-              <input type="checkbox" name="assonance" value="assonance" />{" "}
-              <span className="text-sm">
-                &nbsp;{["Asonante", "Assonant"][chosenLang]}
-              </span>
-            </label>
-            <label className="flex mt-1">
-              <input type="checkbox" name="rythm" value="rythm" />
-              <span className="text-sm">
-                &nbsp;{["Rima", "Rythm"][chosenLang]}
-              </span>
-            </label>
-            <label className="flex mt-1">
-              <input
-                type="checkbox"
-                name="inverted"
-                defaultChecked={state.invertedWords[i]}
-              />
-              <span className="text-sm">
-                &nbsp;{["Invertida", "Inverted"][chosenLang]}
-              </span>
-            </label>
-            <CheckBox 
+            <CheckBox
+              chosenLang={chosenLang}
+              uniqueId={`assonance-${i}`}
+              defaultChecked={state.assonanceWords[i]}
+              changeFn={(newValue: any) => changeAssonant(newValue, i)}
+              title={["Asonante", "Assonant"]}
+            />
+            <CheckBox
+              chosenLang={chosenLang}
+              uniqueId={`rythm-${i}`}
+              defaultChecked={state.rhymingWords[i]}
+              changeFn={(newValue: any) => changeRhyme(newValue, i)}
+              title={["Rima", "Rhymes"]}
+            />
+            <CheckBox
               chosenLang={chosenLang}
               uniqueId={`inverted-${i}`}
               defaultChecked={state.invertedWords[i]}

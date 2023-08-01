@@ -71,8 +71,8 @@ export const calculatePower = (
   domainWords: string[],
   spellLength: number,
   invertedWords: boolean[],
-  assonanceWords?: boolean[],
-  rhymingWords?: boolean[],
+  assonanceWords: boolean[],
+  rhymingWords: boolean[],
   isGracious?: boolean
 ) => {
   const cleanDetailedWords = detailedWords.slice(0, spellLength);
@@ -83,6 +83,8 @@ export const calculatePower = (
     }
     return w;
   });
+  const cleanAssocanceWords = assonanceWords.slice(0, spellLength);
+  const cleanRhymingWords = rhymingWords.slice(0, spellLength);
 
   const rst = ruleList.map((element) => {
     return {
@@ -94,7 +96,9 @@ export const calculatePower = (
         cleanDetailedWords,
         cleanDomainWords,
         spellLength,
-        cleanInvertedWords
+        cleanInvertedWords,
+        cleanAssocanceWords,
+        cleanRhymingWords
       ),
     };
   });

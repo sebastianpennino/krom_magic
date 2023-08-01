@@ -10,8 +10,8 @@ const langs = {
   esp: 0,
   eng: 1,
 };
-
 const defaultLang = langs.esp;
+const maxSpellLength = 12
 
 export type AppState = {
   showResults: boolean;
@@ -21,9 +21,9 @@ export type AppState = {
   spellLength: number;
   results: any;
   invertedWords: boolean[];
-  assonanceWords?: boolean[];
-  rhymingWords?: boolean[];
-  isGracious?: boolean;
+  assonanceWords: boolean[];
+  rhymingWords: boolean[];
+  isGracious: boolean;
 };
 
 export const initialState: AppState = {
@@ -40,10 +40,13 @@ export const initialState: AppState = {
     "",
     "",
   ],
-  detailedWords: Array.from({ length: 12 }, () => ""),
+  detailedWords: Array.from({ length: maxSpellLength }, () => ""),
   spellLength: 4,
   results: null,
-  invertedWords: Array.from({ length: 12 }, () => false),
+  invertedWords: Array.from({ length: maxSpellLength }, () => false),
+  assonanceWords: Array.from({ length: maxSpellLength }, () => false),
+  rhymingWords: Array.from({ length: maxSpellLength }, () => false),
+  isGracious: false,
 };
 
 function App() {
@@ -90,6 +93,7 @@ function App() {
             state={state}
             chosenLang={chosenLang}
             dispatch={dispatch}
+            maxSpellLength={maxSpellLength}
           />
         ) : (
           <ResultsPage state={state} chosenLang={chosenLang} />
