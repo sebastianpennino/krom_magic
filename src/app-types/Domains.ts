@@ -7,6 +7,7 @@ export enum PowerWordDomain {
   ILUSION = "ILUSION",
   NECROMANCY = "NECROMANCY",
   TRANSMUTATION = "TRANSMUTATION",
+  UNKNOWN = "_",
 }
 
 export type ValidPowerWordDomain =
@@ -15,7 +16,7 @@ export type ValidPowerWordDomain =
 export const domainList = [
   {
     name: ["...", "..."],
-    formulaName: '',
+    formulaName: PowerWordDomain.UNKNOWN,
   },
   {
     name: ["Ilusión (1)", "Ilusion (1)"],
@@ -65,6 +66,18 @@ export type PowerWordRelationship = {
 };
 
 export const cyclogram: Record<ValidPowerWordDomain, PowerWordRelationship> = {
+  [PowerWordDomain.UNKNOWN]: {
+    id: 0,
+    quarter: 0,
+    north: false,
+    south: false,
+    west: false,
+    east: false,
+    formulaName: PowerWordDomain.UNKNOWN,
+    analogousClockWise: PowerWordDomain.UNKNOWN,
+    analogousAntiClockWise: PowerWordDomain.UNKNOWN,
+    opposite: PowerWordDomain.UNKNOWN,
+  },
   [PowerWordDomain.ILUSION]: {
     id: 1,
     quarter: 1,

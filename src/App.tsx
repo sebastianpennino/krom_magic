@@ -29,17 +29,18 @@ export type AppState = {
 export const initialState: AppState = {
   showResults: false,
   spellName: "",
-  domainWords: [
-    PowerWordDomain.ILUSION,
-    PowerWordDomain.TRANSMUTATION,
-    PowerWordDomain.NECROMANCY,
-    PowerWordDomain.EVOCATION,
-    "",
-    "",
-    "",
-    "",
-    "",
-  ],
+  // domainWords: [
+  //   PowerWordDomain.ILUSION,
+  //   PowerWordDomain.TRANSMUTATION,
+  //   PowerWordDomain.NECROMANCY,
+  //   PowerWordDomain.EVOCATION,
+  //   "_",
+  //   "_",
+  //   "_",
+  //   "_",
+  //   "_",
+  // ],
+  domainWords: Array.from({ length: maxSpellLength }, () => "_"),
   detailedWords: Array.from({ length: maxSpellLength }, () => ""),
   spellLength: 4,
   results: null,
@@ -100,10 +101,6 @@ function App() {
         )}
       </main>
 
-      {/* <div>
-        {JSON.stringify(state, null, 2)}
-      </div> */}
-
       {/* Footer */}
       <footer className="bg-stone-950 py-4 px-4 flex justify-center sticky bottom-0">
         <button
@@ -120,7 +117,7 @@ function App() {
             const oneIsEmpty = state.domainWords
               .slice(0, state.spellLength)
               .filter((w) => {
-                return w !== "";
+                return w !== "" && w !== PowerWordDomain.UNKNOWN;
               });
             if (oneIsEmpty.length !== state.spellLength) {
               return alert(
