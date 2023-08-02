@@ -31,20 +31,30 @@ export const TextInputWithAutocomplete = ({
 
   const [suggestions, setSuggestions] = useState<string[]>(initialSuggestions);
 
-  const filteredSuggestions = suggestions.filter(
-    (suggestion) =>
-      suggestion.toLowerCase().indexOf(internValue.toLowerCase()) > -1
-  ).slice(0, 10);
-
+  const filteredSuggestions = suggestions
+    .filter(
+      (suggestion) =>
+        suggestion.toLowerCase().indexOf(internValue.toLowerCase()) > -1
+    )
+    .slice(0, 10);
+    
+  /* this is a mess, but will clean up later */
   useEffect(() => {
     setSuggestions(initialSuggestions);
   }, [initialSuggestions]);
 
+  /* this is a mess, but will clean up later */
+  const saveSyncChanges = (val: any) => {
+    setValue(val);
+  };
+
+  /* this is a mess, but will clean up later */
+  useEffect(() => {
+    changeFn(internValue);
+  }, [internValue]);
+
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setValue(removeNonLettersHyphensUnderscores(e.target.value || ""));
-    if (changeFn && typeof changeFn === "function") {
-      changeFn(e.target.value || "");
-    }
+    saveSyncChanges(e.target.value || "");
     setShowSuggestions(true);
   };
 
@@ -62,7 +72,11 @@ export const TextInputWithAutocomplete = ({
           </span>
         </label>
       )}
-      {/* <div className="bg-gray-900">{internValue}{value}</div> */}
+      {/* FOR DEBUG:
+      <div className="bg-gray-900">
+        {internValue}^{value}
+      </div> 
+      */}
       <input
         id={id}
         type="text"
@@ -71,6 +85,11 @@ export const TextInputWithAutocomplete = ({
         onChange={(e) => onChange(e)}
         value={internValue || value}
         disabled={disabled}
+        onBlurCapture={() => {
+          setTimeout(() => {
+            hideSuggestion();
+          }, 600); // hackish but it works!
+        }}
       />
 
       {internValue.length > 0 &&
@@ -79,7 +98,7 @@ export const TextInputWithAutocomplete = ({
         filteredSuggestions.length > 0 && (
           <SuggestionList
             suggestions={filteredSuggestions}
-            clickFn={setValue}
+            clickFn={saveSyncChanges}
             clean={hideSuggestion}
           />
         )}
