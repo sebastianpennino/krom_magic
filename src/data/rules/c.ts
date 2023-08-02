@@ -10,6 +10,7 @@ export const cRule = {
   ],
   rewardText: ["(+1/Palabra)", "(+1/Word)"],
   version: 1.2,
+  ready: true,
   evalFunction: (
     _words: string[],
     domainWords: string[],

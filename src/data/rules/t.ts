@@ -1,4 +1,3 @@
-import { ValidPowerWordDomain, cyclogram } from "../../apptypes/Domains";
 import { powerRulesList } from "@apptypes/PowerRules";
 
 // TODO: Complete this formula
@@ -10,6 +9,7 @@ export const tRule = {
     "For which the number of domains between the domains of each Word sum to 5, and for which no two Words are analogous",
   ],
   rewardText: ["(+3)", "(+3)"],
+  ready: false, // TODO: not ready yet.
   evalFunction: (
     _words: string[],
     domainWords: string[],

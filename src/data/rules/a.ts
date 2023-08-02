@@ -9,6 +9,7 @@ export const aRule = {
   ],
   rewardText: ["(+2)", "(+2)"],
   version: 1.2,
+  ready: true,
   evalFunction: (
     _words: string[],
     domainWords: string[],

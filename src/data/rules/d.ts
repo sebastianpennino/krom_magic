@@ -1,4 +1,3 @@
-import { ValidPowerWordDomain, cyclogram } from "../../apptypes/Domains";
 import { powerRulesList } from "@apptypes/PowerRules";
 
 export const dRule = {
@@ -9,6 +8,7 @@ export const dRule = {
     "Which contain at least two Words that exhibit significant assonance",
   ],
   rewardText: ["(+2/Palabra Asonante)", "(+2/Assonat Word)"],
+  ready: true,
   evalFunction: (
     _words: string[],
     _domainWords: string[],

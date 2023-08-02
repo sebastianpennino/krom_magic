@@ -9,7 +9,8 @@ export const oRule = {
     "For which the domains of each Word in order flow in one direction (either clockwise or counter-clockwise within one rotation) around the Octad Cyclogram",
   ],
   rewardText: ["(+2)", "(+2)"],
-  version: 1.3,
+  version: 1.4,
+  ready: true,
   evalFunction: (
     _words: string[],
     domainWords: string[],

@@ -1,4 +1,3 @@
-import { ValidPowerWordDomain, cyclogram } from "../../apptypes/Domains";
 import { powerRulesList } from "@apptypes/PowerRules";
 
 // !IMPORTANT: Complete this formula
@@ -10,6 +9,7 @@ export const pRule = {
     "For which, on the Octad Cyclogram, a uniform pentagram can be drawn by connecting with a straight line the domain of each Word in order",
   ],
   rewardText: ["(+5)", "(+5)"],
+  ready: false, // TODO: not ready yet.
   evalFunction: (
     words: string[],
     domainWords: string[],

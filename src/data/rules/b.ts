@@ -9,6 +9,7 @@ export const bRule = {
   ],
   rewardText: ["(+1/Palabra)", "(+1/Word)"],
   version: 1.1,
+  ready: true,
   evalFunction: (
     words: string[],
     _domainWords: string[],

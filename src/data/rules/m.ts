@@ -1,4 +1,3 @@
-import { ValidPowerWordDomain, cyclogram } from "../../apptypes/Domains";
 import { powerRulesList } from "@apptypes/PowerRules";
 
 export const mRule = {
@@ -9,6 +8,7 @@ export const mRule = {
     "whose Words have been all been inverted",
   ],
   rewardText: ["(+1/Palabra)", "(+1/Word)"],
+  ready: true,
   evalFunction: (
     _words: string[],
     _domainWords: string[],

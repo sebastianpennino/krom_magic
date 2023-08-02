@@ -9,6 +9,7 @@ export const xRule = {
     "Whose Words come from the domains of either order or chaos exclusively",
   ],
   rewardText: ["(+1)", "(+1)"],
+  ready: true,
   evalFunction: (
     _words: string[],
     domainWords: string[],

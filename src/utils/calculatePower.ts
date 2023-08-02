@@ -93,6 +93,7 @@ export const calculatePower = (
       letter: element.name[chosenLang].charAt(0).toLowerCase(),
       description: element.description[chosenLang],
       rewardText: element.rewardText[chosenLang],
+      ready: element.ready || false,
       score: element.evalFunction(
         cleanDetailedWords,
         cleanDomainWords,
@@ -102,16 +103,19 @@ export const calculatePower = (
         cleanRhymingWords
       ),
     };
-  });
+  }).filter((r) => r.ready); // filter out not ready rules
+
   const realScore = rst
     .map((r) => r.score)
     .sort((a, b) => a - b)
     .reverse()
     .slice(0, spellLength) // pick same as number words
     .reduce((acc, cur) => acc + cur, 0);
+
   const totalScore = rst.reduce((rst, cur) => {
     return rst + cur.score;
   }, 0);
+
   return {
     realScore,
     totalPotential: totalScore,
@@ -127,10 +131,11 @@ export const calculatePower = (
         score: r.score,
       })),
     allPositiveRules: rst.filter((rst) => rst.score > 0),
-    allRules: rst.map((r) => ({
-      letter: r.letter.toUpperCase(),
-      desc: r.description,
-      score: r.score,
-    })),
+    allRules: rst
+      .map((r) => ({
+        letter: r.letter.toUpperCase(),
+        desc: r.description,
+        score: r.score,
+      })),
   };
 };

@@ -1,4 +1,3 @@
-import { ValidPowerWordDomain, cyclogram } from "../../apptypes/Domains";
 import { powerRulesList } from "@apptypes/PowerRules";
 
 export const fRule = {
@@ -10,6 +9,7 @@ export const fRule = {
   ],
   rewardText: ["(+3, minimo 2 Palabras)", "(+3, minimum 2 Words)"],
   version: 1.1,
+  ready: true,
   evalFunction: (
     _words: string[],
     domainWords: string[],

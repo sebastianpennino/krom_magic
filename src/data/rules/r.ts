@@ -9,6 +9,7 @@ export const rRule = {
     "Which contains a Word with a corresponding diametric Word",
   ],
   rewardText: ["(+1/pareja)", "(+1/pair)"],
+  ready: true,
   evalFunction: (
     _words: string[],
     domainWords: string[],

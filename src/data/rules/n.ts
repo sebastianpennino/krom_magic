@@ -1,4 +1,3 @@
-import { ValidPowerWordDomain, cyclogram } from "../../apptypes/Domains";
 import { powerRulesList } from "@apptypes/PowerRules";
 
 export const nRule = {
@@ -9,6 +8,7 @@ export const nRule = {
     "whose Words are all of the same domain",
   ],
   rewardText: ["(+1/Palabra, maximo +4)", "(+1/Word, up to +4)"],
+  ready: true,
   evalFunction: (
     _words: string[],
     domainWords: string[],

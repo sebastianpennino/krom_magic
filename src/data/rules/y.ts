@@ -1,4 +1,3 @@
-import { ValidPowerWordDomain, cyclogram } from "../../apptypes/Domains";
 import { powerRulesList } from "@apptypes/PowerRules";
 
 export const yRule = {
@@ -9,6 +8,7 @@ export const yRule = {
     "Whose contituent Words each have the same number of letters",
   ],
   rewardText: ["(+1 por letra de una Palabra)", "(+1 each letter in a word)"],
+  ready: true,
   evalFunction: (
     words: string[],
     _domainWords: string[],

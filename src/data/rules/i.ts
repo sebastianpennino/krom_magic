@@ -1,4 +1,3 @@
-import { ValidPowerWordDomain, cyclogram } from "../../apptypes/Domains";
 import { powerRulesList } from "@apptypes/PowerRules";
 
 export const iRule = {
@@ -10,6 +9,7 @@ export const iRule = {
   ],
   rewardText: ["(+2/Palabra con rima)", "(+2/rhyming Word)"],
   version: 1.2,
+  ready: true,
   evalFunction: (
     _words: string[],
     _domainWords: string[],

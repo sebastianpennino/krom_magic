@@ -9,6 +9,7 @@ export const jRule = {
     "Whose Words come from either the upper or lower domains exclusively",
   ],
   rewardText: ["(+1)", "(+1)"],
+  ready: true,
   evalFunction: (
     _words: string[],
     domainWords: string[],

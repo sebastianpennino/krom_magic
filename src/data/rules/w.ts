@@ -1,4 +1,3 @@
-import { ValidPowerWordDomain, cyclogram } from "../../apptypes/Domains";
 import { powerRulesList } from "@apptypes/PowerRules";
 
 // TODO: Complete this formula
@@ -10,6 +9,7 @@ export const wRule = {
     "For which two or more words are analogous, and exactly one is diametric to one of the analogous words",
   ],
   rewardText: ["(+2)", "(+2)"],
+  ready: false, // TODO: not ready yet.
   evalFunction: (): number => {
     return 0;
   },

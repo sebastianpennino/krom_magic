@@ -1,4 +1,3 @@
-import { ValidPowerWordDomain, cyclogram } from "../../apptypes/Domains";
 import { powerRulesList } from "@apptypes/PowerRules";
 
 export const gRule = {
@@ -9,6 +8,7 @@ export const gRule = {
     "Which contain no Words that imply harm to any living creature.",
   ],
   rewardText: ["(+4)", "(+4)"],
+  ready: false, // TODO: not ready yet.
   evalFunction: (
     _words: string[],
     _domainWords: string[],

@@ -9,6 +9,7 @@ export const vRule = {
     "Whose Words all belong to the same quaternant",
   ],
   rewardText: ["(+1/Palabra, maximo +4)", "(+1/Word, up to +4)"],
+  ready: true,
   evalFunction: (
     _words: string[],
     domainWords: string[],

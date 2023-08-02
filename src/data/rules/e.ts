@@ -1,4 +1,3 @@
-import { ValidPowerWordDomain, cyclogram } from "../../apptypes/Domains";
 import { powerRulesList } from "@apptypes/PowerRules";
 
 export const eRule = {
@@ -9,6 +8,7 @@ export const eRule = {
     "Which contains exactly one word from each of the eight domains.",
   ],
   rewardText: ["(+5)", "(+5)"],
+  ready: true,
   evalFunction: (
     _words: string[],
     domainWords: string[],

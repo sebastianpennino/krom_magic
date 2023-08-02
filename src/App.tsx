@@ -29,18 +29,7 @@ export type AppState = {
 export const initialState: AppState = {
   showResults: false,
   spellName: "",
-  // domainWords: [
-  //   PowerWordDomain.ILUSION,
-  //   PowerWordDomain.TRANSMUTATION,
-  //   PowerWordDomain.NECROMANCY,
-  //   PowerWordDomain.EVOCATION,
-  //   "_",
-  //   "_",
-  //   "_",
-  //   "_",
-  //   "_",
-  // ],
-  domainWords: Array.from({ length: maxSpellLength }, () => "_"),
+  domainWords: Array.from({ length: maxSpellLength }, () => "_"), // note: _ is "Unknown"
   detailedWords: Array.from({ length: maxSpellLength }, () => ""),
   spellLength: 4,
   results: null,

@@ -10,6 +10,8 @@ export const kRule = {
     "for which all the Words belong to either even or odd domains",
   ],
   rewardText: ["(+1/Palabra), max 4", "(+1/Word), max 4"],
+  version: 1.5,
+  ready: true,
   evalFunction: (
     _words: string[],
     domainWords: string[],

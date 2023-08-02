@@ -6,6 +6,7 @@ type validRule = {
   description: string[];
   rewardText: string[];
   version?: any;
+  ready?: boolean, // the rule is ready to be taken into account
   evalFunction: (
     words: string[],
     domainWords: string[],
