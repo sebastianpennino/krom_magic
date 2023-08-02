@@ -2,7 +2,7 @@ import { powerRulesList } from "@apptypes/PowerRules";
 
 export const iRule = {
   formulaName: powerRulesList.INTRAVERSIVE,
-  name: ["Intreversivo", "Intraversive"],
+  name: ["Interversivo", "Intraversive"],
   description: [
     "Donde al menos dos Palabras del hechizo riman",
     "For which at least two Words in the spell rhyme.",

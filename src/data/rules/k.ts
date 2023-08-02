@@ -4,7 +4,7 @@ import { powerRulesList } from "@apptypes/PowerRules";
 // !IMPORTANT: This rule has been changed to a totally different new thing
 export const kRule = {
   formulaName: powerRulesList.KYMOIAMBIC,
-  name: ["Kymoiambico", "Kymoiambic"],
+  name: ["Kymonabico", "Kymoiambic"],
   description: [
     "Todas las Palabras pertenencen a dominios pares o impares",
     "for which all the Words belong to either even or odd domains",

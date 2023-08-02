@@ -3,7 +3,7 @@ import { powerRulesList } from "@apptypes/PowerRules";
 
 export const cRule = {
   formulaName: powerRulesList.COMPOUND,
-  name: ["Compuesta", "Compound"],
+  name: ["Compuesto", "Compound"],
   description: [
     "Cada Palabra es analoga a otra Palabra en el hechizo",
     "Whose Words are each analogous to one other Word in the spell",

@@ -2,7 +2,7 @@ import { powerRulesList } from "@apptypes/PowerRules";
 
 export const yRule = {
   formulaName: powerRulesList.YEALING,
-  name: ["Ymerico", "Yealing"],
+  name: ["Y-metrico", "Yealing"],
   description: [
     "Todas las Palabras del hechizo tienen el mismo numero de letras",
     "Whose contituent Words each have the same number of letters",

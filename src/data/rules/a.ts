@@ -2,7 +2,7 @@ import { powerRulesList } from "@apptypes/PowerRules";
 
 export const aRule = {
   formulaName: powerRulesList.ACCOMMODANT,
-  name: ["Acomodada", "Accommodant"],
+  name: ["Acomodado", "Accommodant"],
   description: [
     "La primera y última Palabra son del mismo dominio (y ninguna otra Palabra es de ese dominio)",
     "Whose first and last Word are from the same domain, and no other Words share that domain",

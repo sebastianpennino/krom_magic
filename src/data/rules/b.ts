@@ -2,7 +2,7 @@ import { powerRulesList } from "@apptypes/PowerRules";
 
 export const bRule = {
   formulaName: powerRulesList.BABELOUS,
-  name: ["Babelinosa", "Babelous"],
+  name: ["Babeloso", "Babelous"],
   description: [
     "Cada Palabra del hechizo comienza con la misma letra del alfabeto",
     "For which every Word begins with the same letter of the alphabet",

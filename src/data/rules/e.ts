@@ -2,7 +2,7 @@ import { powerRulesList } from "@apptypes/PowerRules";
 
 export const eRule = {
   formulaName: powerRulesList.EUPHONIC,
-  name: ["Eufonica", "Euphonic"],
+  name: ["Eufonico", "Euphonic"],
   description: [
     "Contiene exactamente una Palabra de cada uno de los ocho dominios",
     "Which contains exactly one word from each of the eight domains.",

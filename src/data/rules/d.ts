@@ -2,7 +2,7 @@ import { powerRulesList } from "@apptypes/PowerRules";
 
 export const dRule = {
   formulaName: powerRulesList.DEFRACTIVE,
-  name: ["Defractiva", "Defractive"],
+  name: ["Defractivo", "Defractive"],
   description: [
     "Contiene al menos dos Palabras con asonancia notable",
     "Which contain at least two Words that exhibit significant assonance",
