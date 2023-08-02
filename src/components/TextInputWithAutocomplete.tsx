@@ -36,7 +36,6 @@ export const TextInputWithAutocomplete = ({
       (suggestion) =>
         suggestion.toLowerCase().indexOf(internValue.toLowerCase()) > -1
     )
-    .slice(0, 10);
     
   /* this is a mess, but will clean up later */
   useEffect(() => {

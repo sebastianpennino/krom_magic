@@ -11,7 +11,7 @@ export function removeNonLettersHyphensUnderscores(text: string): string {
 export const SuggestionList = ({ suggestions, clickFn, clean }: Props) => {
   return (
     <div className="relative w-full">
-      <div className="shadow-lg bg-gray-700 rounded-md absolute w-full">
+      <div className="shadow-lg bg-gray-700 rounded-md absolute w-full overflow-y-auto max-h-48">
         {suggestions.map((text, i) => {
           return (
             <span

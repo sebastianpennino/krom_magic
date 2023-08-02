@@ -11,7 +11,7 @@ const langs = {
   eng: 1,
 };
 const defaultLang = langs.esp;
-const maxSpellLength = 12
+const maxSpellLength = 12;
 
 export type AppState = {
   showResults: boolean;
@@ -117,16 +117,24 @@ function App() {
         <button
           className="w-1/2 lg:w-1/3 px-4 py-2 text-white text-sm"
           onClick={() => {
-            const oneIsEmpty = state.domainWords
+            const emptyDomain = state.domainWords
               .slice(0, state.spellLength)
               .filter((w) => {
                 return w !== "" && w !== PowerWordDomain.UNKNOWN;
               });
-            if (oneIsEmpty.length !== state.spellLength) {
+            const emptyWord = state.detailedWords
+              .slice(0, state.spellLength)
+              .filter((w) => {
+                return w !== "" && w !== PowerWordDomain.UNKNOWN;
+              });
+            if (
+              emptyDomain.length !== state.spellLength ||
+              emptyWord.length !== state.spellLength
+            ) {
               return alert(
                 [
-                  "Error: falta elegir Palabras",
-                  "Error: Some Words are not selected",
+                  "Error: faltan Palabras",
+                  "Error: missing words",
                 ][chosenLang]
               );
             }

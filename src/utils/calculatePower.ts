@@ -124,7 +124,7 @@ export const calculatePower = (
       .filter((rst) => rst.score > 0)
       .sort((a, b) => a.score - b.score)
       .reverse()
-      // .slice(0, spellLength)
+      .slice(0, spellLength)
       .map((r) => ({
         name: r.name,
         desc: r.description,
