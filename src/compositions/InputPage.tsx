@@ -1,10 +1,12 @@
 import { AppState } from "../App";
 import { CheckBox } from "../components/CheckBox";
-import { domainList } from "../app-types/Domains";
+import { ValidPowerWordDomain, domainList } from "../app-types/Domains";
 import { Dropdown } from "../components/Dropdown";
 import { FakeNumericInput } from "../components/FakeNumericInput";
 import { SpellAction } from "../reducers/spellReducer";
 import { TextInput } from "../components/TextInput";
+import { TextInputWithAutocomplete } from "../components/TextInputWithAutocomplete";
+import { powerWordList } from "../app-types/Words";
 
 type Props = {
   state: AppState;
@@ -135,10 +137,15 @@ export const InputPage = ({
               selection={state.domainWords[i]}
               disabled={state.showResults}
             />
-            <TextInput
+            <TextInputWithAutocomplete
               chosenLang={chosenLang}
               value={state.detailedWords[i]}
               changeFn={(newValue: any) => changeWord(newValue, i)}
+              initialSuggestions={
+                powerWordList[
+                  state.domainWords[i] as unknown as ValidPowerWordDomain
+                ][chosenLang]
+              }
             />
             <CheckBox
               chosenLang={chosenLang}
