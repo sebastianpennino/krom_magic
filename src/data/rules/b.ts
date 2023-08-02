@@ -16,6 +16,9 @@ export const bRule = {
     spellLength: number
   ): number => {
     const firstLetter = words[0].charAt(0);
+    if (firstLetter.length <= 1) {
+      return 0;
+    }
     const allWordsStartWithFirstLetter = words.every((chosenWord) => {
       return firstLetter === chosenWord.charAt(0);
     });

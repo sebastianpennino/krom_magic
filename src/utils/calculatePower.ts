@@ -128,6 +128,7 @@ export const calculatePower = (
       .map((r) => ({
         name: r.name,
         desc: r.description,
+        reward: r.rewardText,
         score: r.score,
       })),
     allPositiveRules: rst.filter((rst) => rst.score > 0),

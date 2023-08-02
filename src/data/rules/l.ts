@@ -15,7 +15,7 @@ export const lRule = {
     _domainWords: string[],
     spellLength: number
   ): number => {
-    if (words.length < 2) {
+    if (words.length < 2 || words[0].length <= 1) {
       return 0;
     }
     const wordsSorted = [...words].sort();

@@ -172,11 +172,69 @@ export const InputPage = ({
         ))}
       </div>
       <div className="flex justify-center mt-4">
-        <div className="w-full">
+        {state.results && state.results.pickedRules && (
+          <table className="w-full border-collapse border bg-gray-900 mt-4">
+            <thead>
+              <tr>
+                <th className="px-4 py-2 border border-gray-300">
+                  {["Nombre", "Name"][chosenLang]}
+                </th>
+                <th className="px-4 py-2 border border-gray-300">
+                  {["Requisitos", "Requirements"][chosenLang]}
+                </th>
+                <th className="px-4 py-2 border border-gray-300">
+                  {["Recompensa", "Reward"][chosenLang]}
+                </th>
+                <th className="px-4 py-2 border border-gray-300">
+                  {["Puntos", "Score"][chosenLang]}
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              {state.results.pickedRules.map(
+                (
+                  r: {
+                    name: string;
+                    desc: string;
+                    reward: string;
+                    score: string;
+                  },
+                  i: number
+                ) => {
+                  return (
+                    <tr key={`${r.name}-${i}`}>
+                      <td className="px-4 py-2 border border-gray-300">
+                        {r.name}
+                      </td>
+                      <td className="px-4 py-2 border border-gray-300">
+                        {r.desc}
+                      </td>
+                      <td className="px-4 py-2 border border-gray-300">
+                        {r.reward}
+                      </td>
+                      <td className="px-4 py-2 border border-gray-300 text-center">
+                        {r.score}
+                      </td>
+                    </tr>
+                  );
+                }
+              )}
+              <tr className="bg-gray-950 text-white">
+                <td className="px-4 py-2 border border-gray-300 text-right" colSpan={3}>
+                  {["Puntos Totales", "Total Score"][chosenLang]}
+                </td>
+                <td className="px-4 py-2 border border-gray-300 text-center">
+                  {state.results.realScore}
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        )}
+        {/* <div className="w-full">
           <small style={{ fontSize: "10px" }}>
             <pre>{JSON.stringify({ ...state.results }, null, 2)}</pre>
           </small>
-        </div>
+        </div> */}
       </div>
     </>
   );
