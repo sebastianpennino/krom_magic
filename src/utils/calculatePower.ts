@@ -1,5 +1,6 @@
-import { ValidPowerWordDomain, cyclogram } from "../app-types/Domains";
-import { PowerRules, ruleList } from "../app-types/PowerRules";
+import { PowerRules } from "@apptypes/PowerRules";
+import { ValidPowerWordDomain, cyclogram } from "@apptypes/Domains";
+import { ruleList } from "@apptypes/Rules";
 
 type RulesObject = {
   [PowerRules.ACCOMMODANT]: number;

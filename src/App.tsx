@@ -4,7 +4,7 @@ import { ReactComponent as KromsysLogo } from "./assets/k-logo.svg";
 import { ResultsPage } from "./compositions/ResultPage";
 import { InputPage } from "./compositions/InputPage";
 import { AppAction, SpellAction, spellReducer } from "./reducers/spellReducer";
-import { PowerWordDomain } from "./app-types/Domains";
+import { PowerWordDomain } from "@apptypes/Domains";
 
 const langs = {
   esp: 0,

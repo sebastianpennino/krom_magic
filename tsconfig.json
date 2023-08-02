@@ -16,6 +16,12 @@
     "noEmit": true,
     "jsx": "react-jsx",
     "sourceMap": true,
+    "baseUrl": "src",
+    "paths": {
+      "@rules/*": ["data/rules/*"],
+      "@data/*": ["data/*"],
+      "@apptypes/*": ["apptypes/*"],
+    }
   },
   "include": ["src"],
   "references": [{ "path": "./tsconfig.node.json" }]

@@ -1,12 +1,12 @@
 import { AppState } from "../App";
 import { CheckBox } from "../components/CheckBox";
-import { ValidPowerWordDomain, domainList } from "../app-types/Domains";
+import { ValidPowerWordDomain, domainList } from "../apptypes/Domains";
 import { Dropdown } from "../components/Dropdown";
 import { FakeNumericInput } from "../components/FakeNumericInput";
 import { SpellAction } from "../reducers/spellReducer";
 import { TextInput } from "../components/TextInput";
 import { TextInputWithAutocomplete } from "../components/TextInputWithAutocomplete";
-import { powerWordList } from "../app-types/Words";
+import { powerWordList } from "../apptypes/Words";
 
 type Props = {
   state: AppState;
