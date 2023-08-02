@@ -29,7 +29,21 @@ export type AppState = {
 export const initialState: AppState = {
   showResults: false,
   spellName: "",
-  domainWords: Array.from({ length: maxSpellLength }, () => "_"), // note: _ is "Unknown"
+  // domainWords: Array.from({ length: maxSpellLength }, () => "_"), // note: _ is "Unknown"
+  domainWords: [
+    PowerWordDomain.ABJURATION,
+    PowerWordDomain.CONJURATION,
+    PowerWordDomain.ENCHANTMENT,
+    PowerWordDomain.EVOCATION,
+    PowerWordDomain.UNKNOWN,
+    PowerWordDomain.UNKNOWN,
+    PowerWordDomain.UNKNOWN,
+    PowerWordDomain.UNKNOWN,
+    PowerWordDomain.UNKNOWN,
+    PowerWordDomain.UNKNOWN,
+    PowerWordDomain.UNKNOWN,
+    PowerWordDomain.UNKNOWN,
+  ], // note: _ is "Unknown"
   detailedWords: Array.from({ length: maxSpellLength }, () => ""),
   spellLength: 4,
   results: null,

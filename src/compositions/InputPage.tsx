@@ -173,19 +173,19 @@ export const InputPage = ({
       </div>
       <div className="flex justify-center mt-4">
         {state.results && state.results.pickedRules && (
-          <table className="w-full border-collapse border bg-gray-900 mt-4">
+          <table className="w-full border-collapse border bg-gray-900 mt-4 text-xs lg:text-sm">
             <thead>
               <tr>
-                <th className="px-4 py-2 border border-gray-300">
+                <th className="px-1 py-2 border border-gray-300">
                   {["Nombre", "Name"][chosenLang]}
                 </th>
-                <th className="px-4 py-2 border border-gray-300">
+                <th className="px-1 py-2 border border-gray-300">
                   {["Requisitos", "Requirements"][chosenLang]}
                 </th>
-                <th className="px-4 py-2 border border-gray-300">
+                <th className="px-1 py-2 border border-gray-300">
                   {["Recompensa", "Reward"][chosenLang]}
                 </th>
-                <th className="px-4 py-2 border border-gray-300">
+                <th className="px-1 py-2 border border-gray-300">
                   {["Puntos", "Score"][chosenLang]}
                 </th>
               </tr>
@@ -203,16 +203,16 @@ export const InputPage = ({
                 ) => {
                   return (
                     <tr key={`${r.name}-${i}`}>
-                      <td className="px-4 py-2 border border-gray-300">
+                      <td className="px-2 py-2 border border-gray-300">
                         {r.name}
                       </td>
-                      <td className="px-4 py-2 border border-gray-300">
+                      <td className="px-2 py-2 border border-gray-300">
                         {r.desc}
                       </td>
-                      <td className="px-4 py-2 border border-gray-300">
+                      <td className="px-2 py-2 border border-gray-300">
                         {r.reward}
                       </td>
-                      <td className="px-4 py-2 border border-gray-300 text-center">
+                      <td className="px-2 py-2 border border-gray-300 text-center">
                         {r.score}
                       </td>
                     </tr>

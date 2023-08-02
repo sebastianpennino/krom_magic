@@ -62,6 +62,7 @@ export const TextInputWithAutocomplete = ({
           </span>
         </label>
       )}
+      {/* <div className="bg-gray-900">{internValue}{value}</div> */}
       <input
         id={id}
         type="text"
