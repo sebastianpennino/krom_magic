@@ -18,7 +18,6 @@
     "sourceMap": true,
     "baseUrl": "src",
     "paths": {
-      "@rules/*": ["data/rules/*"],
       "@data/*": ["data/*"],
       "@apptypes/*": ["apptypes/*"],
     }

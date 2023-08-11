@@ -9,8 +9,6 @@ export enum SpellAction {
   UPDATE_RESULTS = "UPDATE_RESULTS",
   RESET_STATE = "RESET_STATE",
   SWITCH_POLARITY = "SWITCH_POLARITY",
-  SWITCH_ASSONANCE = "SWITCH_ASSONANCE",
-  SWITCH_RHYME = "SWITCH_RHYME",
 }
 
 export type ValidSpellAction = (typeof SpellAction)[keyof typeof SpellAction];
@@ -25,6 +23,7 @@ export function spellReducer(state: AppState, action: AppAction) {
     case SpellAction.RESET_STATE: {
       return {
         ...action.payload,
+        detailedWords: Array.from({ length: state.spellLength }, () => ""),
         spellLength: state.spellLength,
       };
     }
@@ -64,30 +63,6 @@ export function spellReducer(state: AppState, action: AppAction) {
         invertedWords: newInvertedWords,
       };
     }
-    case SpellAction.SWITCH_ASSONANCE: {
-      const position = parseInt(action.payload?.pos, 10);
-      const value = Boolean(action.payload?.val);
-
-      const newAssonanceWords = [...state.assonanceWords];
-      newAssonanceWords[position] = value;
-
-      return {
-        ...state,
-        assonanceWords: newAssonanceWords,
-      };
-    }
-    case SpellAction.SWITCH_RHYME: {
-      const position = parseInt(action.payload?.pos, 10);
-      const value = Boolean(action.payload?.val);
-
-      const newRhymingWords = [...state.rhymingWords];
-      newRhymingWords[position] = value;
-
-      return {
-        ...state,
-        rhymingWords: newRhymingWords,
-      };
-    }
     case SpellAction.CHANGE_NAME: {
       return {
         ...state,
@@ -109,8 +84,6 @@ export function spellReducer(state: AppState, action: AppAction) {
           state.domainWords.slice(0, state.spellLength),
           state.spellLength,
           state.invertedWords.slice(0, state.spellLength),
-          state.assonanceWords.slice(0, state.spellLength),
-          state.rhymingWords.slice(0, state.spellLength),
         ),
       };
     }

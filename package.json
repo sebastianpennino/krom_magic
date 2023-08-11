@@ -1,6 +1,6 @@
 {
   "name": "kromsys_spell_helper",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "A small mobile first PWA for creating Kromsys spells",
   "type": "module",
   "repository": "git@github.com:sebastianpennino/krom_magic.git",

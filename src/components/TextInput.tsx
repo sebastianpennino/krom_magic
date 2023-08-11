@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { removeNonLettersHyphensUnderscores, toCamelCase } from "../utils";
+import { toCamelCase } from "../utils";
 
 type Props = {
   title?: [string, string];
@@ -27,7 +27,7 @@ export const TextInput = ({
   const id = toCamelCase((title && title[chosenLang]) || randomString);
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setValue(removeNonLettersHyphensUnderscores(e.target.value || ""));
+    setValue(e.target.value || "");
     if (changeFn && typeof changeFn === "function") {
       changeFn(e.target.value || "");
     }

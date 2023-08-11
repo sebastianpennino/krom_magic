@@ -10,8 +10,8 @@ const langs = {
   esp: 0,
   eng: 1,
 };
-const defaultLang = langs.esp;
-const maxSpellLength = 12;
+const defaultLang = langs.eng;
+const maxSpellLength = 9;
 
 export type AppState = {
   showResults: boolean;
@@ -21,36 +21,29 @@ export type AppState = {
   spellLength: number;
   results: any;
   invertedWords: boolean[];
-  assonanceWords: boolean[];
-  rhymingWords: boolean[];
-  isGracious: boolean;
 };
 
 export const initialState: AppState = {
   showResults: false,
   spellName: "",
-  // domainWords: Array.from({ length: maxSpellLength }, () => "_"), // note: _ is "Unknown"
   domainWords: [
-    PowerWordDomain.ABJURATION,
-    PowerWordDomain.CONJURATION,
-    PowerWordDomain.ENCHANTMENT,
-    PowerWordDomain.EVOCATION,
-    PowerWordDomain.UNKNOWN,
-    PowerWordDomain.UNKNOWN,
-    PowerWordDomain.UNKNOWN,
-    PowerWordDomain.UNKNOWN,
-    PowerWordDomain.UNKNOWN,
-    PowerWordDomain.UNKNOWN,
-    PowerWordDomain.UNKNOWN,
-    PowerWordDomain.UNKNOWN,
+    PowerWordDomain.MAIN,
+    PowerWordDomain.MAIN,
+    PowerWordDomain.MAIN,
+    PowerWordDomain.MAIN,
+    PowerWordDomain.MAIN,
+    PowerWordDomain.MAIN,
+    PowerWordDomain.MAIN,
+    PowerWordDomain.MAIN,
+    PowerWordDomain.MAIN,
+    PowerWordDomain.MAIN,
+    PowerWordDomain.MAIN,
+    PowerWordDomain.MAIN,
   ], // note: _ is "Unknown"
   detailedWords: Array.from({ length: maxSpellLength }, () => ""),
   spellLength: 4,
   results: null,
   invertedWords: Array.from({ length: maxSpellLength }, () => false),
-  assonanceWords: Array.from({ length: maxSpellLength }, () => false),
-  rhymingWords: Array.from({ length: maxSpellLength }, () => false),
-  isGracious: false,
 };
 
 function App() {
@@ -62,7 +55,7 @@ function App() {
   const resetAllExceptWordCount = () => {
     dispatch({
       type: SpellAction.RESET_STATE,
-      payload: initialState,
+      payload: initialState, 
     });
   };
 
@@ -117,27 +110,6 @@ function App() {
         <button
           className="w-1/2 lg:w-1/3 px-4 py-2 text-white text-sm"
           onClick={() => {
-            const emptyDomain = state.domainWords
-              .slice(0, state.spellLength)
-              .filter((w) => {
-                return w !== "" && w !== PowerWordDomain.UNKNOWN;
-              });
-            const emptyWord = state.detailedWords
-              .slice(0, state.spellLength)
-              .filter((w) => {
-                return w !== "" && w !== PowerWordDomain.UNKNOWN;
-              });
-            if (
-              emptyDomain.length !== state.spellLength ||
-              emptyWord.length !== state.spellLength
-            ) {
-              return alert(
-                [
-                  "Error: faltan Palabras",
-                  "Error: missing words",
-                ][chosenLang]
-              );
-            }
             updateResults();
           }}
         >

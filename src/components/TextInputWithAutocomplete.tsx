@@ -31,12 +31,11 @@ export const TextInputWithAutocomplete = ({
 
   const [suggestions, setSuggestions] = useState<string[]>(initialSuggestions);
 
-  const filteredSuggestions = suggestions
-    .filter(
-      (suggestion) =>
-        suggestion.toLowerCase().indexOf(internValue.toLowerCase()) > -1
-    )
-    
+  const filteredSuggestions = suggestions.filter(
+    (suggestion) =>
+      suggestion.toLowerCase().indexOf(internValue.toLowerCase()) > -1
+  );
+
   /* this is a mess, but will clean up later */
   useEffect(() => {
     setSuggestions(initialSuggestions);
@@ -71,7 +70,8 @@ export const TextInputWithAutocomplete = ({
           </span>
         </label>
       )}
-      {/* FOR DEBUG:
+      {/* 
+      FOR DEBUG:
       <div className="bg-gray-900">
         {internValue}^{value}
       </div> 

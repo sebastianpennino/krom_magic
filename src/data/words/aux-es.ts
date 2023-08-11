@@ -1,0 +1,16 @@
+export const auxWordsSpanish = [
+  'Distante',
+  'Espacioso',
+  'Gigante',
+  'Grande',
+  'Lejos',
+  'Mayor',
+  'Muchos',
+  'Multiples',
+  'Persistente',
+  'Poderoso',
+  'Potente',
+  'Prolongado',
+  'Superior',
+  'Voluminoso',
+]
