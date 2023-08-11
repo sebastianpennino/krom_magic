@@ -7,6 +7,7 @@ import { SpellAction } from "../reducers/spellReducer";
 import { TextInput } from "../components/TextInput";
 import { TextInputWithAutocomplete } from "../components/TextInputWithAutocomplete";
 import { powerWordList } from "../apptypes/Words";
+import { DetailMode, detailList } from "@apptypes/Details";
 
 type Props = {
   state: AppState;
@@ -59,6 +60,20 @@ export const InputPage = ({
     });
   };
 
+  const changeMainDetails = (newValue: boolean) => {
+    dispatch({
+      type: SpellAction.SWITCH_ONLY_MAIN_DETAILS_FILTER,
+      payload: newValue,
+    });
+  };
+
+  const changeTacticalDetails = (newValue: boolean) => {
+    dispatch({
+      type: SpellAction.SWITCH_ONLY_TACTICAL_DETAILS_FILTER,
+      payload: newValue,
+    });
+  };
+
   const spellLengthArray = Array.from({ length: state.spellLength });
 
   const calculateColSpan = (i: number, len: number) => {
@@ -91,10 +106,7 @@ export const InputPage = ({
     <>
       <div>
         <TextInput
-          title={[
-            "Concepto del hechizo",
-            "Spell Concept",
-          ]}
+          title={["Concepto del hechizo", "Spell Concept"]}
           placeholder={["", ""]}
           chosenLang={chosenLang}
           value={state.spellName}
@@ -142,6 +154,100 @@ export const InputPage = ({
             />
           </div>
         ))}
+      </div>
+      <div className="flex justify-center mt-4 flex-col">
+        <CheckBox
+          chosenLang={chosenLang}
+          uniqueId="onlyMainDetailFilter"
+          defaultChecked={state.onlyMainDetails}
+          changeFn={(newValue: any) => changeMainDetails(newValue)}
+          title={["Solo detalles principales", "Only main details"]}
+        />
+        <CheckBox
+          chosenLang={chosenLang}
+          uniqueId="onlyTacticalDetailFilter"
+          defaultChecked={state.onlyTacticalDetails}
+          changeFn={(newValue: any) => changeTacticalDetails(newValue)}
+          title={["Solo tacticos", "Only tactical"]}
+        />
+        {/* 
+        <fieldset>
+          <legend>{["Modo", "Mode"][chosenLang]}</legend>
+          <div>
+            <input
+              id="a"
+              type="radio"
+              name="modeDetailFilter"
+              value={DetailMode.BOTH}
+            />
+            <label htmlFor="a"> {["Ambos", "Both"][chosenLang]}</label>
+          </div>
+          <div>
+            <input
+              id="b"
+              type="radio"
+              name="modeDetailFilter"
+              value={DetailMode.NARRATIVE}
+            />
+            <label htmlFor="b"> {["Narrativo", "Narrative"][chosenLang]}</label>
+          </div>
+          <div>
+            <input
+              id="c"
+              type="radio"
+              name="modeDetailFilter"
+              value={DetailMode.TACTICAL}
+            />
+            <label htmlFor="c"> {["Tactico", "Tactical"][chosenLang]}</label>
+          </div>
+        </fieldset>
+*/}
+      </div>
+      <div className="flex justify-center mt-4 flex-col">
+        {detailList
+          .filter((d) => {
+            if (state.onlyMainDetails) {
+              return d.isMain;
+            } else {
+              return true;
+            }
+          })
+          .filter((d) => {
+            if (state.onlyTacticalDetails) {
+              return (
+                d.mode === DetailMode.TACTICAL || d.mode === DetailMode.BOTH
+              );
+            } else {
+              return (
+                d.mode === DetailMode.NARRATIVE || d.mode === DetailMode.BOTH
+              );
+            }
+          })
+          // .filter((d) => {
+          //   if (state.detailMode !== DetailMode.BOTH) {
+          //     return d.mode === state.detailMode;
+          //   } else {
+          //     return true;
+          //   }
+          // })
+          .map((d) => {
+            return (
+              <div style={{ border: "1px solid red" }} key={d.formulaName}>
+                <pre>
+                  {JSON.stringify(
+                    {
+                      name: d.name[chosenLang],
+                      mode: d.mode,
+                      steps: d.steps[chosenLang],
+                      progression: d.progression,
+                    },
+                    null,
+                    2
+                  )}
+                </pre>
+              </div>
+            );
+          })}
       </div>
       <div className="flex justify-center mt-4">
         <div className="w-full">

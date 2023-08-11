@@ -4,41 +4,24 @@ export enum DetailMode {
   BOTH = "BOTH",
 }
 
-export const detailList = [
+
+export type ValidDetailMode =
+  (typeof DetailMode)[keyof typeof DetailMode];
+
+
+type DetailItem = {
+  formulaName: string,
+  name: string[];
+  mode: DetailMode;
+  isMain: boolean;
+  progression: number[];
+  steps: string[][];
+};
+
+export const detailList: Array<DetailItem> = [
   {
-    formulaName: ["Volumen", "Volume"],
-    mode: DetailMode.TACTICAL,
-    isMain: true,
-    progression: [1, 3, 6, 9, 12],
-    steps: [
-      ["Una casilla", "Radio = 1", "Radio = 2", "Radio = 3", "Radio 4"],
-      ["Single square", "Radius = 1", "Radius = 2", "Radius = 3", "Radius = 4"],
-    ],
-  },
-  {
-    formulaName: ["Volumen", "Volume"],
-    mode: DetailMode.NARRATIVE,
-    progression: [1, 3, 6, 9, 12],
-    isMain: true,
-    steps: [
-      [
-        "Persona",
-        "Habitación (o Radio 5m)",
-        "Edificio (o Radio 20m)",
-        "Cuadra (o Radio 50m)",
-        "Masivo (50m x hexagono)",
-      ],
-      [
-        "A Person",
-        "Room (or 16ft radius)",
-        "Building (or 21yd radius)",
-        "Block (or 55yd radius)",
-        "Massive (or 55yd radius per Hex)",
-      ],
-    ],
-  },
-  {
-    formulaName: ["Puntos", "Point"],
+    formulaName: 'pointB',
+    name: ["Puntos", "Point"],
     isMain: true,
     progression: [1, 3, 5, 6, 9],
     mode: DetailMode.BOTH,
@@ -60,7 +43,42 @@ export const detailList = [
     ],
   },
   {
-    formulaName: ["Distancia", "Distance"],
+    formulaName: 'volumeT',
+    name: ["Volumen", "Volume"],
+    mode: DetailMode.TACTICAL,
+    isMain: true,
+    progression: [1, 3, 6, 9, 12],
+    steps: [
+      ["Una casilla", "Radio = 1", "Radio = 2", "Radio = 3", "Radio 4"],
+      ["Single square", "Radius = 1", "Radius = 2", "Radius = 3", "Radius = 4"],
+    ],
+  },
+  {
+    formulaName: 'volumeN',
+    name: ["Volumen", "Volume"],
+    mode: DetailMode.NARRATIVE,
+    progression: [1, 3, 6, 9, 12],
+    isMain: true,
+    steps: [
+      [
+        "Persona",
+        "Habitación (o Radio 5m)",
+        "Edificio (o Radio 20m)",
+        "Cuadra (o Radio 50m)",
+        "Masivo (50m x hexagono)",
+      ],
+      [
+        "A Person",
+        "Room (or 16ft radius)",
+        "Building (or 21yd radius)",
+        "Block (or 55yd radius)",
+        "Massive (or 55yd radius per Hex)",
+      ],
+    ],
+  },
+  {
+    formulaName: 'distanceT',
+    name: ["Distancia", "Distance"],
     mode: DetailMode.TACTICAL,
     progression: [1, 4, 6, 9],
     isMain: true,
@@ -80,7 +98,8 @@ export const detailList = [
     ],
   },
   {
-    formulaName: ["Distancia", "Distance"],
+    formulaName: 'distanceN',
+    name: ["Distancia", "Distance"],
     mode: DetailMode.NARRATIVE,
     progression: [1, 4, 6, 9, 15],
     isMain: true,
@@ -96,7 +115,8 @@ export const detailList = [
     ],
   },
   {
-    formulaName: ["Tiempo (T)", "Time (T)"],
+    formulaName: 'timeT',
+    name: ["Tiempo (T)", "Time (T)"],
     mode: DetailMode.TACTICAL,
     progression: [0, 4, 6, 9, 12],
     isMain: true,
@@ -118,7 +138,8 @@ export const detailList = [
     ],
   },
   {
-    formulaName: ["Tiempo (N)", "Time (N)"],
+    formulaName: 'timeN',
+    name: ["Tiempo (N)", "Time (N)"],
     mode: DetailMode.NARRATIVE,
     progression: [0, 4, 6, 9, 12],
     isMain: true,
@@ -140,27 +161,30 @@ export const detailList = [
     ],
   },
   {
-    formulaName: ["Daño sostenido", "Damage sustained"],
+    formulaName: 'dmgSusB',
+    name: ["Daño sostenido", "Damage sustained"],
     isMain: true,
     progression: [1, 4, 6, 9],
     mode: DetailMode.BOTH,
     steps: [
-      [1, 4, 6, 9],
-      [1, 4, 6, 9],
+      ["1", "4", "6", "9"],
+      ["1", "4", "6", "9"],
     ],
   },
   {
-    formulaName: ["Daño unico", "Damage once"],
+    formulaName: 'dmgUniqueB',
+    name: ["Daño unico", "Damage once"],
     isMain: true,
     progression: [1, 4, 6, 9],
     mode: DetailMode.BOTH,
     steps: [
-      [1, 4, 6, 9],
-      [1, 4, 6, 9],
+      ["1", "4", "6", "9"],
+      ["1", "4", "6", "9"],
     ],
   },
   {
-    formulaName: ["Invocacion", "Invocation"],
+    formulaName: 'invocB',
+    name: ["Invocacion", "Invocation"],
     isMain: false,
     progression: [1, 3, 6, 9, 12],
     mode: DetailMode.BOTH,
@@ -170,7 +194,8 @@ export const detailList = [
     ],
   },
   {
-    formulaName: ["Alteracion?", "Alteration?"],
+    formulaName: 'alterB',
+    name: ["Alteracion?", "Alteration?"],
     isMain: false,
     progression: [2, 4, 6],
     mode: DetailMode.BOTH,

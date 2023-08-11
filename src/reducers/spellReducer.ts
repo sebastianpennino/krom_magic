@@ -9,6 +9,8 @@ export enum SpellAction {
   UPDATE_RESULTS = "UPDATE_RESULTS",
   RESET_STATE = "RESET_STATE",
   SWITCH_POLARITY = "SWITCH_POLARITY",
+  SWITCH_ONLY_MAIN_DETAILS_FILTER = "SWITCH_ONLY_MAIN_DETAILS_FILTER",
+  SWITCH_ONLY_TACTICAL_DETAILS_FILTER = "SWITCH_ONLY_TACTICAL_DETAILS_FILTER"
 }
 
 export type ValidSpellAction = (typeof SpellAction)[keyof typeof SpellAction];
@@ -62,6 +64,18 @@ export function spellReducer(state: AppState, action: AppAction) {
         ...state,
         invertedWords: newInvertedWords,
       };
+    }
+    case SpellAction.SWITCH_ONLY_MAIN_DETAILS_FILTER: {
+      return {
+        ...state,
+        onlyMainDetails: action.payload
+      }
+    }
+    case SpellAction.SWITCH_ONLY_TACTICAL_DETAILS_FILTER: {
+      return {
+        ...state,
+        onlyTacticalDetails: action.payload
+      }
     }
     case SpellAction.CHANGE_NAME: {
       return {

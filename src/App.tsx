@@ -5,12 +5,13 @@ import { ResultsPage } from "./compositions/ResultPage";
 import { InputPage } from "./compositions/InputPage";
 import { AppAction, SpellAction, spellReducer } from "./reducers/spellReducer";
 import { PowerWordDomain } from "@apptypes/Domains";
+import { DetailMode, ValidDetailMode } from "@apptypes/Details";
 
 const langs = {
   esp: 0,
   eng: 1,
 };
-const defaultLang = langs.eng;
+const defaultLang = langs.esp;
 const maxSpellLength = 9;
 
 export type AppState = {
@@ -21,6 +22,9 @@ export type AppState = {
   spellLength: number;
   results: any;
   invertedWords: boolean[];
+  detailMode: ValidDetailMode;
+  onlyMainDetails: boolean;
+  onlyTacticalDetails: boolean;
 };
 
 export const initialState: AppState = {
@@ -44,6 +48,9 @@ export const initialState: AppState = {
   spellLength: 4,
   results: null,
   invertedWords: Array.from({ length: maxSpellLength }, () => false),
+  detailMode: DetailMode.BOTH,
+  onlyMainDetails: false,
+  onlyTacticalDetails: false,
 };
 
 function App() {
