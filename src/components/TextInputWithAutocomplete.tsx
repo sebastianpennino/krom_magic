@@ -32,8 +32,12 @@ export const TextInputWithAutocomplete = ({
   const [suggestions, setSuggestions] = useState<string[]>(initialSuggestions);
 
   const filteredSuggestions = suggestions.filter(
-    (suggestion) =>
-      suggestion.toLowerCase().indexOf(internValue.toLowerCase()) > -1
+    (suggestion) => {
+      if(internValue.length <= 2) {
+        return suggestion.toLowerCase().indexOf(internValue.toLowerCase()) === 0
+      }
+      return suggestion.toLowerCase().indexOf(internValue.toLowerCase()) > -1
+    }
   );
 
   /* this is a mess, but will clean up later */

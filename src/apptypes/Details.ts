@@ -21,7 +21,7 @@ type DetailItem = {
 export const detailList: Array<DetailItem> = [
   {
     formulaName: 'pointB',
-    name: ["Puntos", "Point"],
+    name: ["Objetivos - Punto", "Target - Point"],
     isMain: true,
     progression: [1, 3, 5, 6, 9],
     mode: DetailMode.BOTH,
@@ -44,7 +44,7 @@ export const detailList: Array<DetailItem> = [
   },
   {
     formulaName: 'volumeT',
-    name: ["Volumen", "Volume"],
+    name: ["Objetivos - Volumen", "Target - Volume"],
     mode: DetailMode.TACTICAL,
     isMain: true,
     progression: [1, 3, 6, 9, 12],
@@ -55,7 +55,7 @@ export const detailList: Array<DetailItem> = [
   },
   {
     formulaName: 'volumeN',
-    name: ["Volumen", "Volume"],
+    name: ["Objetivos - Volumen", "Target - Volume"],
     mode: DetailMode.NARRATIVE,
     progression: [1, 3, 6, 9, 12],
     isMain: true,

@@ -9,6 +9,7 @@ import { TextInputWithAutocomplete } from "../components/TextInputWithAutocomple
 import { powerWordList } from "../apptypes/Words";
 import { DetailMode, detailList } from "@apptypes/Details";
 import { RadioOptions } from "../components/RadioOptions";
+import { Slider } from "../components/Slider";
 
 type Props = {
   state: AppState;
@@ -155,16 +156,23 @@ export const InputPage = ({
           uniqueId="onlyMainDetailFilter"
           defaultChecked={state.onlyMainDetails}
           changeFn={(newValue: any) => changeMainDetails(newValue)}
-          title={["Solo detalles principales", "Only main details"]}
+          title={["Solo esenciales", "Only essentials"]}
         />
         <CheckBox
           chosenLang={chosenLang}
           uniqueId="onlyTacticalDetailFilter"
           defaultChecked={state.onlyTacticalDetails}
           changeFn={(newValue: any) => changeTacticalDetails(newValue)}
-          title={["Solo tacticos", "Only tactical"]}
+          title={["Modo Combate", "Combat Mode"]}
         />
-        <pre>{JSON.stringify({ opt: state.opt }, null, 2)}</pre>
+      </div>
+      <div className="flex justify-center mt-4 flex-col">
+        <h2
+          style={{ backgroundColor: "rgb(59, 59, 59)" }}
+          className="text-center font-bold"
+        >
+          Detalles (Poder ${state.spellLength * 3})
+        </h2>
       </div>
       <div className="flex justify-center mt-4 flex-col">
         {detailList
@@ -186,37 +194,16 @@ export const InputPage = ({
               );
             }
           })
-          // .filter((d) => {
-          //   if (state.detailMode !== DetailMode.BOTH) {
-          //     return d.mode === state.detailMode;
-          //   } else {
-          //     return true;
-          //   }
-          // })
           .map((d) => {
             return (
-              <RadioOptions
+              <Slider
+                key={d.formulaName}
                 legend={d.name[chosenLang]}
-                steps={d.steps[chosenLang]}
-                cat={d.formulaName}
-                changeFn={(e: any, i: any) => {
-                  changeOpt(e, i);
-                }}
+                initialValue={0}
+                stepLabel={d.steps[chosenLang]}
+                stepCost={d.progression}
+                max={d.steps[chosenLang].length}
               />
-              // <div style={{ border: "1px solid red" }} key={d.formulaName}>
-              //   <pre>
-              //     {JSON.stringify(
-              //       {
-              //         name: d.name[chosenLang],
-              //         mode: d.mode,
-              //         steps: d.steps[chosenLang],
-              //         progression: d.progression,
-              //       },
-              //       null,
-              //       2
-              //     )}
-              //   </pre>
-              // </div>
             );
           })}
       </div>
