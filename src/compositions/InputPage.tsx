@@ -8,6 +8,7 @@ import { TextInput } from "../components/TextInput";
 import { TextInputWithAutocomplete } from "../components/TextInputWithAutocomplete";
 import { powerWordList } from "../apptypes/Words";
 import { DetailMode, detailList } from "@apptypes/Details";
+import { RadioOptions } from "../components/RadioOptions";
 
 type Props = {
   state: AppState;
@@ -39,13 +40,6 @@ export const InputPage = ({
     });
   };
 
-  const changeInverted = (newValue: any, position: number) => {
-    dispatch({
-      type: SpellAction.SWITCH_POLARITY,
-      payload: { val: newValue, pos: position },
-    });
-  };
-
   const changeSpellName = (newValue: any) => {
     dispatch({
       type: SpellAction.CHANGE_NAME,
@@ -71,6 +65,13 @@ export const InputPage = ({
     dispatch({
       type: SpellAction.SWITCH_ONLY_TACTICAL_DETAILS_FILTER,
       payload: newValue,
+    });
+  };
+
+  const changeOpt = (newValue: any, cat: string) => {
+    dispatch({
+      type: SpellAction.TEST,
+      payload: { newValue, cat },
     });
   };
 
@@ -145,13 +146,6 @@ export const InputPage = ({
                 ][chosenLang]
               }
             />
-            <CheckBox
-              chosenLang={chosenLang}
-              uniqueId={`inverted-${i}`}
-              defaultChecked={state.invertedWords[i]}
-              changeFn={(newValue: any) => changeInverted(newValue, i)}
-              title={["Invertida", "Inverted"]}
-            />
           </div>
         ))}
       </div>
@@ -170,38 +164,7 @@ export const InputPage = ({
           changeFn={(newValue: any) => changeTacticalDetails(newValue)}
           title={["Solo tacticos", "Only tactical"]}
         />
-        {/* 
-        <fieldset>
-          <legend>{["Modo", "Mode"][chosenLang]}</legend>
-          <div>
-            <input
-              id="a"
-              type="radio"
-              name="modeDetailFilter"
-              value={DetailMode.BOTH}
-            />
-            <label htmlFor="a"> {["Ambos", "Both"][chosenLang]}</label>
-          </div>
-          <div>
-            <input
-              id="b"
-              type="radio"
-              name="modeDetailFilter"
-              value={DetailMode.NARRATIVE}
-            />
-            <label htmlFor="b"> {["Narrativo", "Narrative"][chosenLang]}</label>
-          </div>
-          <div>
-            <input
-              id="c"
-              type="radio"
-              name="modeDetailFilter"
-              value={DetailMode.TACTICAL}
-            />
-            <label htmlFor="c"> {["Tactico", "Tactical"][chosenLang]}</label>
-          </div>
-        </fieldset>
-*/}
+        <pre>{JSON.stringify({ opt: state.opt }, null, 2)}</pre>
       </div>
       <div className="flex justify-center mt-4 flex-col">
         {detailList
@@ -232,20 +195,28 @@ export const InputPage = ({
           // })
           .map((d) => {
             return (
-              <div style={{ border: "1px solid red" }} key={d.formulaName}>
-                <pre>
-                  {JSON.stringify(
-                    {
-                      name: d.name[chosenLang],
-                      mode: d.mode,
-                      steps: d.steps[chosenLang],
-                      progression: d.progression,
-                    },
-                    null,
-                    2
-                  )}
-                </pre>
-              </div>
+              <RadioOptions
+                legend={d.name[chosenLang]}
+                steps={d.steps[chosenLang]}
+                cat={d.formulaName}
+                changeFn={(e: any, i: any) => {
+                  changeOpt(e, i);
+                }}
+              />
+              // <div style={{ border: "1px solid red" }} key={d.formulaName}>
+              //   <pre>
+              //     {JSON.stringify(
+              //       {
+              //         name: d.name[chosenLang],
+              //         mode: d.mode,
+              //         steps: d.steps[chosenLang],
+              //         progression: d.progression,
+              //       },
+              //       null,
+              //       2
+              //     )}
+              //   </pre>
+              // </div>
             );
           })}
       </div>

@@ -8,9 +8,9 @@ export enum SpellAction {
   CHANGE_LENGTH = "CHANGE_LENGTH",
   UPDATE_RESULTS = "UPDATE_RESULTS",
   RESET_STATE = "RESET_STATE",
-  SWITCH_POLARITY = "SWITCH_POLARITY",
   SWITCH_ONLY_MAIN_DETAILS_FILTER = "SWITCH_ONLY_MAIN_DETAILS_FILTER",
-  SWITCH_ONLY_TACTICAL_DETAILS_FILTER = "SWITCH_ONLY_TACTICAL_DETAILS_FILTER"
+  SWITCH_ONLY_TACTICAL_DETAILS_FILTER = "SWITCH_ONLY_TACTICAL_DETAILS_FILTER",
+  TEST = "TEST",
 }
 
 export type ValidSpellAction = (typeof SpellAction)[keyof typeof SpellAction];
@@ -53,18 +53,6 @@ export function spellReducer(state: AppState, action: AppAction) {
         domainWords: newDomainWords,
       };
     }
-    case SpellAction.SWITCH_POLARITY: {
-      const position = parseInt(action.payload?.pos, 10);
-      const value = Boolean(action.payload?.val);
-
-      const newInvertedWords = [...state.invertedWords];
-      newInvertedWords[position] = value;
-
-      return {
-        ...state,
-        invertedWords: newInvertedWords,
-      };
-    }
     case SpellAction.SWITCH_ONLY_MAIN_DETAILS_FILTER: {
       return {
         ...state,
@@ -97,9 +85,14 @@ export function spellReducer(state: AppState, action: AppAction) {
           state.detailedWords.slice(0, state.spellLength),
           state.domainWords.slice(0, state.spellLength),
           state.spellLength,
-          state.invertedWords.slice(0, state.spellLength),
         ),
       };
+    }
+    case SpellAction.TEST: {
+      return {
+        ...state,
+        opt: action.payload
+      }
     }
   }
   throw Error("Unknown action: " + action.type);

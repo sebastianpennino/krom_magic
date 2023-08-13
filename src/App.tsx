@@ -21,10 +21,10 @@ export type AppState = {
   detailedWords: string[];
   spellLength: number;
   results: any;
-  invertedWords: boolean[];
   detailMode: ValidDetailMode;
   onlyMainDetails: boolean;
   onlyTacticalDetails: boolean;
+  opt: any;
 };
 
 export const initialState: AppState = {
@@ -47,10 +47,10 @@ export const initialState: AppState = {
   detailedWords: Array.from({ length: maxSpellLength }, () => ""),
   spellLength: 4,
   results: null,
-  invertedWords: Array.from({ length: maxSpellLength }, () => false),
   detailMode: DetailMode.BOTH,
   onlyMainDetails: false,
   onlyTacticalDetails: false,
+  opt: null,
 };
 
 function App() {

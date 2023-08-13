@@ -6,10 +6,8 @@ export const calculatePower = (
   detailedWords: string[],
   domainWords: string[],
   spellLength: number,
-  invertedWords: boolean[],
 ) => {
   const cleanDetailedWords = detailedWords.slice(0, spellLength);
-  const cleanInvertedWords = invertedWords.slice(0, spellLength);
   const cleanDomainWords = domainWords.slice(0, spellLength);
   
   const realScore = spellLength * 3
