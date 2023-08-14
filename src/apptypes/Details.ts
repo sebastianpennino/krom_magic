@@ -44,7 +44,7 @@ export const detailList: Array<DetailItem> = [
   },
   {
     formulaName: 'volumeT',
-    name: ["Objetivos - Volumen", "Target - Volume"],
+    name: ["Objetivos - Volumen (T)", "Target - Volume (T)"],
     mode: DetailMode.TACTICAL,
     isMain: true,
     progression: [1, 3, 6, 9, 12],
@@ -55,7 +55,7 @@ export const detailList: Array<DetailItem> = [
   },
   {
     formulaName: 'volumeN',
-    name: ["Objetivos - Volumen", "Target - Volume"],
+    name: ["Objetivos - Volumen (N)", "Target - Volume (N)"],
     mode: DetailMode.NARRATIVE,
     progression: [1, 3, 6, 9, 12],
     isMain: true,
@@ -78,7 +78,7 @@ export const detailList: Array<DetailItem> = [
   },
   {
     formulaName: 'distanceT',
-    name: ["Distancia", "Distance"],
+    name: ["Distancia (T)", "Distance (T)"],
     mode: DetailMode.TACTICAL,
     progression: [1, 4, 6, 9],
     isMain: true,
@@ -99,7 +99,7 @@ export const detailList: Array<DetailItem> = [
   },
   {
     formulaName: 'distanceN',
-    name: ["Distancia", "Distance"],
+    name: ["Distancia (N)", "Distance (N)"],
     mode: DetailMode.NARRATIVE,
     progression: [1, 4, 6, 9, 15],
     isMain: true,

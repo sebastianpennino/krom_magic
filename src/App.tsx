@@ -6,12 +6,12 @@ import { InputPage } from "./compositions/InputPage";
 import { AppAction, SpellAction, spellReducer } from "./reducers/spellReducer";
 import { PowerWordDomain } from "@apptypes/Domains";
 import { DetailMode, ValidDetailMode } from "@apptypes/Details";
+import { recoverFromLocalStorage } from "./utils/recoverFromLocalStorage";
 
 const langs = {
   esp: 0,
   eng: 1,
 };
-const defaultLang = langs.esp;
 const maxSpellLength = 9;
 
 export type AppState = {
@@ -45,7 +45,7 @@ export const initialState: AppState = {
     PowerWordDomain.MAIN,
   ], // note: _ is "Unknown"
   detailedWords: Array.from({ length: maxSpellLength }, () => ""),
-  spellLength: 4,
+  spellLength: 2,
   results: null,
   detailMode: DetailMode.BOTH,
   onlyMainDetails: false,
@@ -62,7 +62,7 @@ function App() {
   const resetAllExceptWordCount = () => {
     dispatch({
       type: SpellAction.RESET_STATE,
-      payload: initialState, 
+      payload: initialState,
     });
   };
 
@@ -73,7 +73,7 @@ function App() {
     });
   };
 
-  const [chosenLang, setLang] = useState<number>(defaultLang);
+  const [chosenLang, setLang] = recoverFromLocalStorage("lang", langs.eng);
 
   return (
     <div className="flex flex-col h-screen">
@@ -83,7 +83,14 @@ function App() {
           <KromsysLogo />
         </div>
         <div>
-          <h1 className="text-sm">Kromsys Spell Creator</h1>
+          <h1 className="text-sm">
+            {
+              [
+                "Kromsys - Creador de hechizos",
+                "Kromsys - Spell Creator",
+              ][chosenLang]
+            }
+          </h1>
         </div>
         <div className="text-white">
           <FlagButton toggleFn={setLang} currentValue={chosenLang} />

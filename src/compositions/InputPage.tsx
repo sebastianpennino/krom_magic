@@ -8,8 +8,9 @@ import { TextInput } from "../components/TextInput";
 import { TextInputWithAutocomplete } from "../components/TextInputWithAutocomplete";
 import { powerWordList } from "../apptypes/Words";
 import { DetailMode, detailList } from "@apptypes/Details";
-import { RadioOptions } from "../components/RadioOptions";
 import { Slider } from "../components/Slider";
+import { Switch } from "../components/Switch";
+import "../components/switch.css";
 
 type Props = {
   state: AppState;
@@ -17,6 +18,7 @@ type Props = {
   spellName?: string;
   dispatch: any;
   maxSpellLength: number;
+  minSpellLength?: number;
 };
 
 // The input page lets you make choices to create the spell
@@ -24,6 +26,7 @@ export const InputPage = ({
   state,
   chosenLang,
   maxSpellLength,
+  minSpellLength = 2,
   dispatch,
 }: Props) => {
   // Word Domain
@@ -104,6 +107,18 @@ export const InputPage = ({
     ["Duodécima", "Twelfth"],
   ];
 
+  const CSSVars = {
+    "color-bg": "#3a5dc5",
+    "color-bg-on": "#ae3117",
+    "label-color-l": "#3a5dc5",
+    "label-color-r": "#ae3117",
+    "thumb-color-off": "#2e4076",
+    "thumb-color-on": "#822513",
+    "thumb-scale": 1.2,
+    "thumb-animation-pad": "35%",
+    size: "16px",
+  };
+
   return (
     <>
       <div>
@@ -118,7 +133,7 @@ export const InputPage = ({
       </div>
       <div className="flex space-x-4">
         <FakeNumericInput
-          min={1}
+          min={minSpellLength}
           max={maxSpellLength}
           title={["Palabras:", "Words:"][chosenLang]}
           changeFn={changeSpellLength}
@@ -151,19 +166,14 @@ export const InputPage = ({
         ))}
       </div>
       <div className="flex justify-center mt-4 flex-col">
-        <CheckBox
-          chosenLang={chosenLang}
-          uniqueId="onlyMainDetailFilter"
-          defaultChecked={state.onlyMainDetails}
-          changeFn={(newValue: any) => changeMainDetails(newValue)}
-          title={["Solo esenciales", "Only essentials"]}
-        />
-        <CheckBox
-          chosenLang={chosenLang}
-          uniqueId="onlyTacticalDetailFilter"
-          defaultChecked={state.onlyTacticalDetails}
-          changeFn={(newValue: any) => changeTacticalDetails(newValue)}
-          title={["Modo Combate", "Combat Mode"]}
+        <Switch
+          className="switch--styled"
+          {...CSSVars}
+          textLeft={["Modo Narrativo", "Narrative Mode"][chosenLang]}
+          textRight={["Modo Tactico", "Tactical Mode"][chosenLang]}
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+            changeTacticalDetails(e.target.checked)
+          }}
         />
       </div>
       <div className="flex justify-center mt-4 flex-col">
@@ -171,7 +181,7 @@ export const InputPage = ({
           style={{ backgroundColor: "rgb(59, 59, 59)" }}
           className="text-center font-bold"
         >
-          Detalles (Poder ${state.spellLength * 3})
+          {["Poder", "Power"][chosenLang]} ({state.spellLength * 3})
         </h2>
       </div>
       <div className="flex justify-center mt-4 flex-col">
